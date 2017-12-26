@@ -1,0 +1,1055 @@
+﻿/*****************************************************************************/
+
+Object.defineProperty(a,"b",{		//a是操作的对象，b是a的属性名，第三个配置
+  value:3445,
+  enumerable:true
+});
+
+在ie8下只能在DOM对象上使用，尝试在原生的对象使用 Object.defineProperty()会报错。
+
+配置如下：
+
+value:属性的值
+
+writable:如果为false，属性的值就不能被重写,只能为只读了
+
+configurable:总开关，一旦为false，就不能再设置他的（value，writable，configurable）
+
+enumerable:是否能在for...in循环中遍历出来或在Object.keys中列举出来。
+
+get	//参数为value的函数，赋值的时候调用（不能与writable和value同用）
+
+set	//对象取值的时候调用，取得是该函数的返回值（不能与writable和value同用）
+
+
+div.getBoundingClientRect()	//返回一个对象，包含div的left、top、right、bottom、height、width属性
+
+	height		//div除margin外的高度
+	width		//div除margin外的宽度
+	left		//div到窗口左边距的距离
+	top		//div到窗口上边距的距离	
+	right		//left加上width
+	bottom		//top加上height
+
+ele.offsetTop		//相对于最近有定位父元素的top
+ele.offsetWidth		//包含padding、border的宽度
+
+atob		//将base64数据转化为字符串
+
+btoa		//将字符串转化为base64数据
+
+Math.floor(num)		//取整，比num小的最大整数
+
+Math.sin(x)     x 的正玄值。返回值在 -1.0 到 1.0 之间；
+
+Math.cos(x)    	x 的余弦值。返回的是 -1.0 到 1.0 之间的数；
+
+Math.tan(x)	x的正切值	
+
+Math.asin(num)	num为正弦值，返回的是弧度	例如 Math.asin(1)*360/2/Math.PI == 90
+
+Math.acos(num)	num为余弦值，返回的是弧度	例如 Math.acos(1)*360/2/Math.PI == 0
+
+Math.atan(num)	num为正切值，返回的是弧度	例如 Math.atan(1)*360/2/Math.PI == 45
+
+这两个函数中的X 都是指的“弧度”而非“角度”，弧度的计算公式为： 2*PI/360*角度
+
+30° 角度 的弧度 = 2*PI/360*30
+
+
+
+/******************************************************************************/
+
+/*复制到剪贴板*/
+
+var a=document.getElementById('input')	//必须是一个输入框
+a.select();
+document.execCommand('Copy');	//
+
+
+document.execCommand(commandId [, showUI [, value ] ] )	//浏览器操作
+例如：
+document.execCommand('selectAll')	//选中网页的全部内容
+document.execCommand('open')		//打开文件
+document.execCommand('saveAs')		//将网页保存到本地
+document.execCommand('print')		//打印网页
+
+document.execCommand('delete')		//删除选中的文字
+
+谷歌支持：
+backColor
+bold
+delete
+
+
+/**********************************************************************/
+
+//打开全屏
+function openFullscreen() {
+            var docElm = document.documentElement;
+            var fullFunc = docElm.requestFullscreen || docElm.mozRequestFullScreen || docElm.webkitRequestFullScreen || docElm.msRequestFullscreen;
+            if(fullFunc){
+                fullFunc.call(docElm);
+            }else if(typeof window.ActiveXObject !== "undefined"){
+                var wscript = new ActiveXObject("WScript.Shell");
+                if (wscript !== null) {
+                    wscript.SendKeys("{F11}");
+                }
+            }
+        }
+
+//取消全屏
+
+function closeFullscreen(){
+            var fullFunc = document.exitFullscreen || document.mozCancelFullScreen || document.webkitCancelFullScreen || document.msExitFullscreen;
+            if(fullFunc){
+                fullFunc.call(document);
+            }else if(typeof window.ActiveXObject !== "undefined"){
+                var wscript = new ActiveXObject("WScript.Shell");
+                if (wscript !== null) {
+                    wscript.SendKeys("{F11}");
+                }
+            }
+        }
+            		
+
+
+
+/*******************************跨域**************************************/
+
+/**********************原生对象***********************/
+
+NamedNodeMap	NodeList	HTMLCollection
+
+（1）先说NamedNodeMap这个对象，这个比较简单，虽然翻译过来是 命名的节点映射，但它只不过是 Attr这个对象的一个集合，Attr对象是DOM元素节点的属性的对象表达。通过元素节点（element node）的attributes属性返回的就是NamedNodeMap这个对象。与NodeList相同的是它也是一个动态的集合（live collection），与NodeList不同的是，NamedNodeMap中保存的是一组无序的属性节点的集合。
+（2）NodeList对象是由childNodes属性，querySelectorAll方法返回的一组节点的集合，它保存着一组有序的节点。注意区别的是，由childNodes属性返回的NodeList对象是一个动态的集合（live collection）， 而由querySelectorAll方法返回的则是一个静态的集合（static collection）。因而在MDN中将他定义为 ”A sometimes-live collection“，live collection 指的是对对DOM的操作引起的的变化会实时的反映在这个集合里。
+（3）接下来就是HTMLCollection,它在本质是一个动态的NodeList对象。getElementsByTagName等方法返回的是包含零或多个元素的NodeList，在HTML文档中，返回的则是HTMLCollection对象。因此说它在本质上一个NodeList对象，包含一组有序（in document order基于文档结构顺序）的动态集合。
+
+利用script标签（只适用于get）
+function f(da){
+    console.log(da);
+}
+
+var s=document.createElement('script');
+s.src='http://172.16.65.37:8888/aa?callback=f';		//f为回调函数名称
+document.head.appendChild(s);
+
+post跨域
+
+需要后台node编写响应头属性
+res.writeHead(200,{
+   "Content-Type": "text/html; charset=UTF-8",
+   "Access-Control-Allow-Origin":'http://localhost:63342'	//接收请求的域名
+   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',	//接收请求的方法
+   'Access-Control-Allow-Headers': 'X-Requested-With, Content-Type'//接收请求的头部
+});
+
+arguments.callee		//获取当前函数对象
+
+/*******************************跨域**************************************/
+
+
+
+window.navigator.userAgent.indexOf("Firefox")>0		//判断是否为火狐浏览器
+!!window.ActiveXObject || "ActiveXObject" in window		//判断是否为ie浏览器
+
+
+document.getElementById("demo1") 	//获得id是demo1的元素
+document.getElementsByTagName('img') 	//获取所以图片元素
+setTimeout("sb",x) 			//经过x毫秒后，执行sb函数
+setIntarval('sb',x)//定时器当文档加载好才会运行,每过x毫秒，执行sb函数
+a=setIntarval('sb',x)=setTimeout("sb",x)//开定时器
+clearTimeout(a)				//取消定时器
+clearIntarval(a)			//取消定时器
+parseInt(变量)				//返回一个整数
+
+var myDate = new Date();  	//创建一个时间对象，表示当前时间
+				//如果要自定义时间的话，可传入一个参数，参数为毫秒数
+				//如果参数不是一个数字，自动调用Date.parse转化
+
+Date.parse('5/20/2012')		//将字符转化为毫秒数，格式必须为月-日-年
+参数格式有：
+1：月/日/年或年/月/日+时分秒（可省略）	例如：2016/1/1、1/1/2016
+
+	
+    myDate.getYear();       	//获取当前年份(2位)  
+    myDate.getFullYear();   	//获取完整的年份(4位)
+    myDate.getMonth();      	//获取当前月份(0-11,0代表1月) 
+    myDate.getDate();       	//获取当前日(1-31)  
+    myDate.getDay();        	//获取当前星期X(0-6,0代表星期天) 
+    myDate.getTime();       	//获取当前时间(从1970.1.1开始的毫秒数) 
+    myDate.getHours();      	//获取当前小时数(0-23)  
+    myDate.getMinutes();    	//获取当前分钟数(0-59)  
+    myDate.getSeconds();    	//获取当前秒数(0-59)  
+    myDate.getMilliseconds();  	//获取当前毫秒数(0-999)  
+    myDate.toLocaleDateString();//获取当前日期  
+var mytime=myDate.toLocaleTimeString(); //获取当前时间  
+    myDate.toLocaleString( );        //获取年月日和时间的字符串
+    myDate.toLocaleDateString()		//获取年月日的字符串
+
+var a=myDate.getDate()%7;     
+var b=myDate.getDay();
+var c=b-a+1;
+if(c<0){
+  c+=7;
+}				//计算本月1号对应星期几
+
+ul.children 			//ul的子节点
+li.parentNode  			//li的父节点
+oUl.childNodes[0].nodeType	//子节点的类型:文本节点是3,元素节点是1
+	
+var oLi=document.createElement('li');//创建一个li元素
+
+oLi.innerHTML='';		//对li的内容编辑
+
+oUl.appendChild(oLi);		//把创建的li放到指定的ul里
+
+oUl.removeChild(oLi);		//删除ul里的li
+
+****************************************************
+
+var sTop=document.documentElement.scrollTop||
+document.body.scrollTop
+//定义变量，可视窗到顶部的距离
+
+document.documentElement.clientHeight 	//可视窗的高度
+
+document.body.clientHeight   //网页的高度
+
+div.offsetWidth		//div的宽度+padding+border宽度
+div.clientWidth		//div的宽度+padding
+
+
+window.screen.width	//屏幕分辨率的宽
+window.screenTop	//网页正文部分上
+
+e.screenX	//表示距离可视窗左边界的长度
+e.screenY	//表示距离可视窗上边界的长度
+
+******************************************************
+
+function getStyle(obj,name) 		//获取元素样式属性值
+{
+	if(obj.currentStyle)
+	{
+		return obj.currentStyle[name];
+	}
+	else
+	{
+		return getComputedStyle(obj,false)[name];	
+	}
+}
+
+json={"属性"："属性值","属性"："属性值","属性"："属性值"}
+对象字面量={属性："属性值",属性："属性值",属性："属性值"}
+
+for(var i in array){}//i会从0开始到数组长度
+for(var i in json){}//i会遍历json里面的属性
+
+switch(a){
+case 1:语句;
+case 2:语句;
+case 3:语句;
+}
+从表达式值等于某个case语句后的值开始，它下方的所有语句都会一直运行，直到遇到一个break为止
+
+'name' in person  //true,判断person能否访问name属性
+
+正则
+
+具有特殊含义的符号:^ $ . * + ? = ! : | \ / ( ) [ ] { }
+
+/\d+/i
+/\d/g
+/./
+/[^0-9]/
+/[a-zA-Z]/表示英文
+
+
+^	表示行首
+$	表示行尾
+
+i	表示忽略大小写
+g	表示找出全部
+
+\d	表示数字
+\D	表示非数字
+\w	表示英文、数字、下划线
+\W	表示不是英文、数字、下划线
+\s	表示空白字符
+\S	表示非空白字符
+
+匹配中文字符的正则表达式(不匹配符号)： [\u4e00-\u9fa5]
+匹配双字节字符(包括汉字在内)：[^\x00-\xff]
+
+
+.	表示任意值
+[]	表示匹配里面的任意一个字符
+[^]	表示除了什么以外
+
+/a|b/	可以匹配a,也可以匹配b
+
+(?:pattern)	//匹配 pattern 但不获取匹配结果
+
+
+量词
+{n}   	//表示正好n次，
+{n，m}	//表示最少n次，最多m次
+?   	//匹配前面元字符0次或1次
++   	//匹配前面元字符1次或多次
+*  	//表示出现零次或几次
+
+正则在引号里面用\\表示\
+
+例子:new RegExp('\\d\\d\\s') //表示匹配数字数字空格的字符串
+
+匹配变量
+
+new RegExp('('+a+')'+'{3}')	//表示匹配三个变量a
+
+\  		//为转义符
+\.            //表示匹配.
+
+[]     //表示或
+[(\d)*\s]  //表示匹配一个数字或一个空格，*在里面为1个或多个
+
+/[bc]at/gi   //表示匹配所有bat或cat的组合，不分大小写
+/.at/gi  //表示匹配所有以at结尾的3个字符，不分大小写
+/[^\d]/  //表示除数字以外
+
+var re=//;              //定义一个正则  
+re.test(str) 		//如果字符串存在该正则模式，则返回true
+re.test(str)  //如果继续检索的话，就会从上一次操作找到的位置继续检索
+
+re.exec(str)	//先匹配全部，再匹配小括号里面的,第一个匹配不能为null
+例子:
+var a='21ss 21';
+var re=/2(1(s))/;
+console.log(re.exec(a));	//['21s','1s','s']
+
+提示窗口
+
+alert 	 //弹出一段文本	
+confirm  //弹出一个可以让用户确定的框
+prompt   //弹出一个可以让用户输入的框
+
+var x=confirm(str)//当点击确定后,x的值为true
+var x=prompt(str)//当点击确定后,x的值为文本框的值
+
+
+数值转换
+number()
+parseInt()
+parseFloat()
+Math.floor(x) //向下取整
+Math.ceil(x)  //向上取整
+Math.round(x) //四舍五入
+Math.random() //随机生成一个0到1之间的数 
+Math.sin(x)	//正弦
+Math.cos(x)	//余弦
+	//x表示弧度
+	//30度角的正弦为 Math.sin(2*Math.PI/360*30)
+
+1 var myVar   = "3.14159",  
+
+2 str     = ""+ myVar,//  字符  
+
+3 int     = ~~myVar,  //  整数  
+
+4 float   = 1*myVar,  //  浮点数  
+
+5 bool    = !!myVar,  /*  布尔值  
+
+6 array   = [myVar];  //  数组 
+
+undefined == null //true
+
+转换为字符串
+toString()
+
+操作符
+a++  //先求值，a再加1
+++a  //a先加1，再求值
+||  //或者
+&&  //并且
+
+操作符优先级
+
+!>&&>||
+
+比较运算符
+
+==	//将两边操作数切换到同一类型进行比较
+
+===	//当类型跟值相同时返回true
+
+!=	//当不等时返回true，存在类型转换
+
+!==	//值或类型不相等时返回true
+
+检测变量类型
+a instanceof Array //检测是否是数组
+NaN  //非数字
+isNaN(a) //检测是否为非数字
+typeof a//检测a的变量类型，值有string,number,boolean,object,undefined
+a instanceof Object //判断a是对象吗,是为true
+a instanceof Array  //判断a是数组吗
+a instanceof RegExp //判断a是正则吗
+
+用typeof a !='undefined' 判断a是否存在或为undefined
+
+eval()	//会将其输入字符串当做javascript代码执行;
+
+eval('('+jsonstr+')')//加上括号强制将表达式变为对象
+
+eval('var li =2;');
+
+alert(li)	//2
+
+
+数组操作
+arr.push(a,b)   //在数组的尾部加入两项,返回数组的长度
+arr.pop()   //删除数组的最后一项,并且返回这一项
+arr.shift()  //删除数组的第一项，并且返回这一项
+arr.unshift() //在数组的头部添加项目，返回数组的长度
+arr.reverse() //反转数组项的顺序
+arr.sort() //把数组项变成字符串进行排序
+arr.indexOf(a,b)//a是要查找的项,b是选择起点的下标(可省略),返回位置
+arr.lastIndexOf(a,b)//表示从后面找起,下标同indexOf
+arr.slice(a,b)    //返回数组从位置a到位置b的元素,包含a而不含b
+arr.splice(index,len,[item])    //该方法会改变原始数组
+
+	index:数组开始下标        
+	len: 替换/删除的长度       
+	item:替换的值，删除操作的话 item为空
+
+arr.join(a)   	   //把数组中的所有元素放入一个字符串,a为分隔符
+arr.concat(arr2)	//合并数组
+
+arr.sort(function(a,b){		//表示从小到大排序
+  return a-b;
+})
+arr.sort(function(a,b){		//表示按照元素的a属性从小到大排序
+  return a.a-b.a;
+})
+
+数组的迭代方法
+
+every(callback) //对数组每一项给定函数，如果每一项都返回true，则值为true
+		//如果其中有结果返回false，停止循环，值为false
+	
+
+some(callback)  //对数组每一项给定函数，如果有一项返回true，则值为true
+		
+
+filter(callback)//对数组每一项给定函数，返回该函数返回true的项组成的数组
+		
+
+forEach(callback)//对数组的每一项给定函数，没有返回值
+		
+
+map(callback)   //对数组每一项给定函数，返回的结果组成数组
+		
+上面的callback的第一个参数为当前数组元素，第二个参数为当前索引，第三个参数为当前数组s
+
+
+reduce(callback,value) //遍历数组
+//如果value存在，那么第一次执行callback的第一个参数为value，第二个参数为当前数组元素，第三个参数为当前索引
+//如果value不存在，那么第一次执行callback的第一个参数为数组的第一个元素，接下来的第一个参数为上一次执行callback的返回值，第二个参数为当前数组元素（从第二个元素开始），第三个参数为当前索引（从1开始）
+
+
+
+****************************************
+
+例子:
+var arr=[1,2,3,4];
+arr.reduce(function(prev,next,index){
+   console.log(prev,next,index);
+   return 5;
+});
+输出结果为:	1  2  1 
+		5  3  2
+  		5  4  3
+
+例子:
+var arr=[1,2,3,4];
+arr.reduce(function(prev,next,index){
+   console.log(prev,next,index);
+   return 5;
+}，0);
+输出结果为:	0  1  0 
+		5  2  1
+  		5  3  2
+		5  4  3
+
+
+
+
+*******************************************
+
+字符串操作
+str.charAt(index)		//返回指定位置的字符
+str.charCodeAt(index)		//返回指定位置的字符的Unicode码值
+str.toLowerCase()		//把字符串str转换为小写字母
+str.toUpperCase()		//转换为大写字母
+str1.search(re)  		//返回正则匹配的起始位置，没有返回-1
+str1.match(str2)   		//把第一个匹配到的字符返回出来
+str1.match(re)  		//把匹配到的正则模式返回出来,返回数组
+str1.indexOf(str2)  		//返回字符串2在1中的位置，没有返回-1
+str1.indexOf(str2,index)  	//返回字符串2在1中的位置，没有返回-1
+				//从index开始查找
+str.substring(from,to)		//用于返回一个字符串的子串,
+				//包含from的位置，没有to位置的字符
+str.substr(from,length)		//后一个参数表示获取子串的长度
+str.replace(a,b)        //返回字符串，a为被替换的子串，b为替换的文本
+str1.split(str2)        //用str2字符串把str1切成几段,并组成数组
+
+String.fromCharCode	//根据Unicode码值返回字符串
+
+DOM
+
+nodeType //表明节点类型
+
+insertBefore(a,b) //a表示插入的节点，b表示在什么节点前插入
+replaceChild(a,b)//a表示插入的节点，b表示被替换的节点
+
+parentNode  //表示父节点
+children  //表示子节点
+childNodes  //表示子节点
+
+nodeType  //表示节点的类型,文本节点是3，元素节点是1
+1 	元素
+2	属性	
+3	文本
+4	文档中的 CDATA 部分（不会由解析器解析的文本）
+5	实体引用。	
+6	实体
+7	处理指令
+8	注释
+9	Document
+10	DocumentType
+11	代表轻量级的 Document 对象，能够容纳文档的某个部分	
+12	DTD 中声明的符号
+
+nextSibling //表示下一个兄弟节点
+previousSibling  //表示上一个兄弟节点
+
+firstChild  //表示第一个子节点
+lastChild  //表示最后一个子节点
+
+removeChild(a)	//匹配元素删除a节点
+
+e.target  //将发生事件的对象转换成元素节点
+
+DOM扩展
+querySelector() //接受一个css选择符，返回匹配的第一个元素
+
+例子:
+document.querySelector('div')//获取第一个div元素
+document.querySelector('#mydiv')//获取ID为mydiv元素
+document.querySelector('.mydiv')//获取第一个class为mydiv元素
+
+querySelectorAll()  //接受一个css选择符，返回匹配的所有元素
+
+例子:
+document.querySelectorAll('.mydiv')//获取所有class为mydiv元素
+document.querySelectorAll('p strong')//获取所有p元素里面的strong元素
+
+matchesSelector() //接受css选择符，如果调用元素与选择符匹配，返回true
+
+例子:
+document.body.matchesSelector('body')//true
+
+元素遍历
+childElementCount  //返回元素的个数(不包含文本节点和注释)
+firstElementChild  //指向第一个子元素
+lastElementChild   //指向最后一个子元素
+previousElementSibling  //前一个兄弟元素
+nextElementSibling  //下一个兄弟元素
+
+
+位置
+
+document.body.clientHeight	//body的高度
+document.body.clientWidth	//body的宽度
+
+document.body.scrollTop		//滚动条的高度
+
+BOM
+
+window操作
+
+window.open(url,name,参数)	//创建一个新窗口，
+				//并返回那个窗口的window对象
+				//参数包含新窗口的各种属性
+
+
+location对象  //保存当前窗口加载的信息
+属性    	例子         			说明
+hash           	#contents         	//返回URL中的hash
+host         	www.wrox.com:80   	//返回服务器名称和端口号
+hostname     	www.wrox.com		//返回不带端口号的服务器名称
+href       	http://www.wrox.com  	//返回加载页面完整的URL
+pathname      	/WileyCDA/    		//返回URL的目录个文件名
+port            8080    		//返回端口号
+protocol        http    		//返回页面使用的协议
+search      	?q=javascript   	//返回URL的查询字符串
+
+
+history对象
+属性 		例子	说明
+length			//表示浏览历史列表中的元素数量
+
+方法 		例子	说明
+back()			//退后一格
+forward()		//前进一格
+go()		go(-2)	//退后两个历史记录		
+
+
+navigator对象	//包含浏览器厂商和版本信息
+		//用来确定是在ie中还是
+
+screen对象	//包含窗口显示的大小和可用的颜色数量
+属性有 width、height
+
+事件
+addEventListener('click',function(){},布尔值)
+//布尔值为true，则在捕获阶段调用函数，false，则在冒泡阶段调用函数
+//捕获事件发生在前面
+
+removeEventListener('click',函数名,布尔值)
+contextmenu事件 单击右键弹出菜单
+onresize事件  浏览器大小发生改变时发生
+
+事件对象event
+
+IE：有window.event对象 
+FF：没有window.event对象。可以通过给函数的参数传递event对象
+
+currentTarget  //事件正在处理的某个元素
+
+e.target	//表示鼠标停留所在的元素
+
+event.preventDefault() //阻止事件默认行为
+
+
+//阻止默认行为
+if(e.preventDefault){
+     e.preventDefault();
+}else{
+     e.returnValue=false;
+}
+
+//阻止冒泡事件
+if(e.stopPropagation){
+     e.stopPropagation();
+}else{
+     e.cancelBubble=true;		
+}
+
+e.clientX e.clientY			//表示相对窗口的位置坐标
+e.offsetX e.offsetY e.layerX e.layerY	//表示相对当前元素左上角的坐标
+e.pageX   e.pageY			//表示在页面本身的坐标
+e.screenX e.screenY  			//表示鼠标相对整个屏幕的位置
+
+各个属性		ie8		谷歌  		火狐
+
+clientY		       到窗口	       到窗口	       到窗口
+
+layerY		       到窗口           未知		未知
+
+Y		       到窗口	       到窗口		无
+
+offsetY		     到当前元素	     到当前元素        到当前元素
+
+
+
+e.bubbles   //表示事件是否冒泡
+e.cancelable   //是否可以取消事件的默认行为
+e.cancelBubble=true;		//取消事件冒泡
+e.keyCode 			//键盘的键码值
+e.stopPropagation()		//停止事件冒泡
+e.preventDefault()		//取消事件的默认行为
+e.isTrusted		//判断是否是鼠标点击执行操作
+
+
+
+e.shiftKey,e.ctrlKey,e.altKey,e.metaKey
+	//判断有没有按下这些键,有返回true，没有返回false
+
+
+mousewheel	//鼠标滚轮滚动事件
+event.wheelDelta	//表示滚轮方向，-120表示向下，120表示向上
+
+事件类型
+
+UI事件
+
+load	//页面加载完成后触发
+
+unload	//页面写在完成后触发
+
+abort	//用户停止下载触发
+
+error	//发生javascript错误时触发
+
+select	//用户选择文本框的字符时触发
+
+resize	//当窗口的大小发生变化时在window上触发
+
+scroll	//滚动带滚动条的元素时触发
+
+selectstart //当用户选择文字时触发，返回false取消默认选中事件
+
+焦点事件
+
+blur	//在元素失去焦点时触发
+
+focus	//在元素获得焦点时触发
+
+鼠标与滚轮事件
+
+click	//用户单击鼠标左键时触发
+
+dblick	//用户双击鼠标左键时触发
+
+mousedown	//用户按下任意鼠标按钮时触发
+
+mouseover	//鼠标移入另一个元素时触发
+
+mouseenter	//鼠标从元素外部首次移动到元素范围内时触发
+
+mouseleave	//鼠标移出元素范围内时触发
+
+mousemove	//鼠标发生移动是触发
+
+mouseout	//鼠标移出另一个元素时触发
+
+mouseover	//鼠标首次移入另一个元素内部时触发
+
+mouseup		//释放鼠标按钮时触发
+
+mousewheel	//鼠标滚轮滚动时触发
+
+键盘与文本事件
+
+keydown		//当用户按下键盘上的任意键时触发
+
+keypress	//当用户按下键盘上的字符键时触发，按住不放会连续触发
+
+keyup		//当用户释放键盘上的键时触发
+
+textInput	//当用户在可编辑区域输入字符时触发
+
+HTML5事件
+
+contextmenu	//点击鼠标右键弹出菜单
+
+触摸事件
+
+touchstart	//当手指触摸屏幕时触发
+
+touchmove	//当手指在屏幕上滑动时连续触发
+
+touchend	//当手指从屏幕上移开时触发
+
+touchcancel	//当系统停止跟踪触摸时触发
+
+
+
+获得属性
+
+getAttribute(属性名) //获得该属性名的属性值,像src,href,style类似的
+
+setAttribute(属性名，属性值)// 设置某元素的属性
+
+函数参数
+
+arguments表示传入参数组成的数组，可读取，但不可修改
+函数传参是什么值就按什么传入
+
+
+******************
+闭包	//可以在全局变量中使用局部变量
+******************
+
+实例:	
+function f(x){ 	//重复调用一个函数，不断获取下一个元素
+	var i=0;
+	return function(){
+		return x[i++];
+	}
+}
+var a=f([1,2,3,4,5]);
+alert(a());	//1
+alert(a());	//2
+alert(a());	//3
+alert(a());	//4
+
+实例:	//给全局变量赋予操控局部变量的环境
+var n;
+function f(){
+	var name='wang';
+	n=function(){
+		alert(name);
+	}
+}
+f();
+n();	//wang
+
+js内置函数有
+
+number(obj)	//把obj转换为数字，不能转换返回NAN
+parseInt(str,radix)//把字符串转化为整数，radix是被解析字符串的进制
+toString(radix)	//返回对象的字符串表示，radix为数字转换后的进制
+
+*************************************************************************
+函数上下文
+
+函数的直接调用都可以看做是window对象的调用,例如:
+
+function a(){}
+a();//window.a()  //this指向window
+
+对象的方法只能通过this.name访问对象的name属性
+直接的name变量只能先找局部变量，找不到再去全局变量
+函数的调用中，变量值是看定义的上下文
+
+例如:
+
+var name='wang';
+var o={
+     a:function(){
+         console.log(name);
+     },
+     name:'tong'
+};
+o.a();//wang
+
+如果在a函数里var name;那么将输出undefined
+
+*************************************************************************
+
+
+函数的属性
+
+length  //表示函数希望接受参数的个数
+prototype  //原型，是函数的属性
+__proto__	//原型链，是对象的属性
+
+person.__proto__===Person.prototype	//返回true
+
+对象能够追溯到原型的属性就是因为__proto__
+
+function Person(){}
+var person=new Person();
+
+person的原型链等于Person的原型
+Person的原型链等于Function的原型
+Person的原型的原型链等于Object的原型
+Function的原型等于Function的原型链
+
+
+把属性写在构造函数里，把方法写在原型里
+
+重写原型会切断原型与之前实例之间的联系,只要在重写后面再创建实例即可
+
+/*******************************************************************************/
+
+var a=Object.prototype;
+a.isPrototypeOf(Object)	//true,判断a是否为Object的原型
+
+var a=new Object();
+a.hasOwnProperty('name')//false,判断a中是否有name属性（无法比较原型链上的属性）
+
+
+/*******************************************************************************/
+
+			
+
+
+
+
+函数的方法
+
+apply(a,参数数组) //设置函数this的值为a
+call(a,num1,num2) //同样设置this的值为a，但是参数需要一个个写
+
+
+构造函数模式
+var per=new Person(参数...)
+必须使用new操作符，其函数会经历:
+1、创建一个新对象；
+2、讲作用域赋给新对象，让this指向这个新对象
+3、执行函数代码；
+4、返回新对象。
+
+in   //通过对象能够访问给定属性时返回true,无论属性在实例中还是在原型中
+
+alert('name' in person1); //true
+
+************************************
+Object.defineProperty(object,name,{
+		configurable:fale,//表示不能被delete删除
+		enumerable:false,//表示不能通过for-in循环返回属性
+		writable:false,//表示不能修改
+		value:'wang'	//设置新值
+})
+
+
+
+错误对象
+try{	//如果代码错误则执行catch
+	代码;
+}catch(e){		//e是错误对象
+	alert(e.name+':'+e.message);	//错误的名称以及错误的信息
+}
+
+
+一个函数处理多个事件
+var btn=document.getElementById('btn');
+var handler=function(event){
+  switch(event.type){	
+     case 'click':
+        alert('a');
+	break;
+     case 'mouseover':
+        alert('b');
+	break;   
+  }
+}
+btn.onclick=handler;
+btn.onmouseover=handler;
+
+跨浏览器事件处理程序
+
+var EventUtil={
+    addHandler:function(element,type,handler){
+       if(element.addEventListener){
+          element.addEventListener(type,handler,false)
+        }else if(element.attachEvent){
+          element.attachEvent('on'+type,handler);
+         }else{
+           element['on'+type]=handler;
+         } 
+    },
+    removeHandler:function(element,type,handler){
+       if(element.removeEventListener){
+         element.removeEventListener(type,handler,false);
+       }else if(element.detachEvent){
+	  element.detachEvent('on'+type,handler);
+       }else{
+	  element['on'+type]=null;
+       }
+    },
+    getEvent:function(event){
+	return event?event:window.event;
+    },
+    getTarget:function(event){
+	return event.target||event.srcElement;
+    }
+}
+
+
+表单
+
+document.forms  //获取页面中所有的表单
+
+JSON
+JSON里的属性都要加双引号
+stringify(对象字面量)//用于把js对象字面量转化为json
+parse(json对象) //把json解析为javascript值
+
+var book={title:'javascript',authors:['nic','sasc'],year:3};
+var bok=JSON.stringify(book);
+alert(bok);
+
+ajax返回json字符串
+var json=eval('('+str+')');
+或者更方便
+var json=JSON.parse(str)
+
+cookie属性
+
+操作cookie
+
+添加:document.cookie='name='+nam+';expires='+nowDay
+
+nam是变量，expires表示有效期限，nowDay是有效期的时间
+
+添加函数
+function setCookie(c_name,value,expiredays)
+{
+var exdate=new Date()		//获取当前时间
+exdate.setDate(exdate.getDate()+expiredays)	//设置过期时间
+document.cookie=c_name+ "=" +escape(value)+	//添加cookie
+((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+}
+
+/*cookie操作*/
+function getCookie(name) {
+    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if (arr = top.document.cookie.match(reg)) return unescape(arr[2]);
+    else{
+        return null;}
+}
+
+ function delCookie(name) {
+     var exp = new Date();
+     exp.setTime(exp.getTime() - 1);
+     var cval = getCookie(name);
+     if (cval != null) top.document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+ }//使用示例 setCookie("name","hayden"); alert(getCookie("name"));
+function setCookie(name,value,time) {
+    var strsec = getsec(time);
+    var exp = new Date();
+    exp.setTime(exp.getTime() + strsec * 1);
+    top.document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+}
+function getsec(str) {
+    var str1 = str.substring(1, str.length) * 1;
+    var str2 = str.substring(0, 1);
+    if (str2 == "s") {
+        return str1 * 1000;
+    } else if (str2 == "h") {
+        return str1 * 60 * 60 * 1000;
+    } else if (str2 == "d") {
+        return str1 * 24 * 60 * 60 * 1000;
+    }
+}//这是有设定过期时间的使用示例： //s20是代表20秒 //h是指小时，如12小时则是：h12 //d是天数，30天则：d30 setCookie("name","hayden","s20");
+
+
+
+
+
+
+//获取iframe的window对象
+document.getElementsByTagName('iframe')[0].contentWindow
+
+保留关键字(不能作为变量名)
+break
+case
+catch
+continue
+default
+delete
+do
+else
+finally
+for
+function
+if
+in
+instanceof
+new
+return
+switch
+this
+throw
+try
+typeof
+var
+void
+while
+with
+

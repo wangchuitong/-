@@ -1,0 +1,336 @@
+单引号表示字符串，双引号里可以写变量
+
+局部函数访问不到全局变量
+
+=>	//数组的对应关系
+->	//类方法的调用
+
+返回json数据
+$x=array('a'=>1,'b'=>2);
+echo json_encode($x);
+
+返回json中文字符串
+$x=array('a'=>'中国');
+$a=json_encode($x);
+echo preg_replace("#\\\u([0-9a-f]+)#ie", "iconv('UCS-2', 'UTF-8', pack('H4', '\\1'))", $a);
+
+
+if...elseif...else
+
+foreach(arr as a){}
+foreach(arr as a=>b){}
+
+include 'fanme.php';	//加载名字叫fanme.php文件
+
+
+header("Content-Type:text/html;charset=utf8")	//传递中文数据
+echo iconv("GB2312","UTF-8",'中文'); //传递中文数据
+
+输出js弹出中文在输出前面加
+echo"<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
+
+函数
+
+rand(1,31)	//产生一个1到31之间随机数
+
+trim(str,'\r\r(::)') //返回去除左右两边的特殊字符\r\r(::)的字符串
+ltrim()	//去除左边
+rtrim()	//去除右边
+
+var_dump(x)	//x为整数时显示int(x)
+
+preg_match(re,str)//检索str是否含有re,存在则返回true,否则返回false
+
+
+define(name,value,false)//设置常量，name是常量名称，value是常量值
+			//false表示对大小写敏感
+
+readfile("1.txt")	//获取文本内容
+
+file_exists('1.txt')	//判断文件是否存在
+
+$_files['file']['name']	//上传
+第一个参数是表单的 input name，第二个下标可以是 "name", "type", "size", "tmp_name" 或 "error"。就像这样：
+$_files["file"]["name"] - 被上传文件的名称
+$_FILES["file"]["type"] - 被上传文件的类型
+$_FILES["file"]["size"] - 被上传文件的大小，以字节计
+$_FILES["file"]["tmp_name"] - 存储在服务器的文件的临时副本的名称
+$_FILES["file"]["error"] - 由文件上传导致的错误代码
+
+文件操作
+
+$x=fopen('1.txt','r')	//r为打开文件的模式
+
+fread($x,filesize('1.txt'))//读取打开的文件，$x为待读取的文件名
+			//第二个参数是待读取最大字节数
+			//filesize('1.txt')表示1.txt文件的字节数
+
+fwrite($x,str)
+
+fclose($x)	//关闭打开的文件
+
+fgets($x)	//从文件中读取单行,调用后指针到下一行
+
+fgetc()		//从文件中读取单个字符,调用后指针到下一个字符
+
+r	//打开文件为只读,文件指针在文件的开头开始
+
+w	//打开文件为只写,删除文件的内容或创建一个新的文件
+	//如果它不存在,文件指针在文件的开头开始
+
+a	//打开文件为只写,文件中的现有数据会被保留
+	//文件指针在文件结尾开始,创建新的文件，如果文件不存在
+
+x	//创建新文件为只写,返回 FALSE 和错误，如果文件已存在
+
+r+	//打开文件为读/写,文件指针在文件开头开始
+
+w+	//打开文件为读/写
+	//删除文件内容或创建新文件,如果它不存在,文件指针在文件开头开始
+
+a+	//打开文件为读/写,文件中已有的数据会被保留
+	//文件指针在文件结尾开始,创建新文件,如果它不存在
+x+	//创建新文件为读/写,返回 FALSE 和错误,如果文件已存在
+
+时间对象
+
+date()
+
+date('Y-m-d h:i:s')	//返回对应格式的时间
+
+
+a: "am"或是"pm" 
+A: "AM"或是"PM" 
+d: 几日，两位数字，若不足则补零；从"01"至"31" 
+D: 星期几，3个英文字母，如:"Fri" 
+F: 月份，英文全名，如:"January" 
+h: 12小时制的小时，从"01"至"12" 
+H: 24小时制的小时，从"00"至"23" 
+g: 12小时制的小时，不补零；从"1"至"12" 
+G: 24小时制的小时，不补零；从"0"至"23" 
+j: 几日，不足不被零；从"1"至"31" 
+l: 星期几，英文全名，如："Friday" 
+m: 月份，两位数字，从"01"至"12" 
+n: 月份，两位数字，不补零；从"1"至"12" 
+M: 月份，3个英文字母；如："Jan" 
+s: 秒；从"00"至"59" 
+S: 字尾加英文序数，两个英文字母,如："21th" 
+t: 指定月份的天数，从"28"至"31" 
+U: 总秒数 
+w: 数字型的星期几，从"0(星期天)"至"6(星期六)" 
+Y: 年，四位数字 
+y: 年，两位数字 
+z： 一年中的第几天；从"1"至"366" 
+
+mktime()	//返回1970年1月1日到现在的秒数
+
+数据类型
+
+Integer（整数）
+Float（浮点数）
+String（字符串）
+Boolean（布尔值）
+Array（数组）
+Object（对象）
+
+常量
+
+define('name','value',true)	//定义常量,true表示对大小写不敏感
+
+静态变量
+
+static $a;	//$a的初始化只有在第一调用的时候
+
+可变变量
+
+$a='b';
+$b='c';
+$$a	//c
+
+变量类型函数
+
+gettype(a)	//返回a的变量类型，如不是标准类型，则返回'unknow type'	 
+settype(a,'double')	//设置变量类型,变量类型变化
+
+(float)a;	//整体变成浮点数，变量类型没变
+
+
+
+判断变量类型
+
+is_array(a)	//是否是数组
+is_double(a)	//是否是浮点数
+is_int(a)	//是否是整数
+is_string(a)	//是否是字符串
+is_bool(a)	//是否是布尔值
+is_object(a)	//是否是对象
+is_resource(a)	//是否是资源
+is_null(a)	//是否是null
+is_scalar(a)	//是否是标量，即整数，布尔值，字符串和浮点数
+is_callable(a)	//是否是有效的函数名称
+
+判断变量状态
+
+isset(a)		//是否存在
+upset(a)		//删除变量
+unset(a)		//取消引用,断开变量名与变量内容之间的绑定
+
+引用操作符&
+
+$a=5;
+$b=&$a;
+$a=7;//$b=7
+
+
+**************************************************************
+
+字符串操作函数
+
+substr(str,start,length)	//截取指定长度的子串
+
+substr_replace(str,repl,start,length)
+			//表示指定位置起指定长度替换为repl字符串
+
+str_ireplace(str1,str2,str)//在str中将str1替换为str2
+
+explode(';',str)	//用分号将str分成数组
+
+strlen(str)	//返回str字符串的长度
+
+strpos(str1,str2)//如果在str1中找到str2，则返回首个匹配的字符位置，
+		 //没有则返回false
+
+ereg_replace(re,repl,str)
+//在str中寻找正则匹配的字符串，然后用repl替换它，返回新的字符串
+
+
+数组操作函数
+
+全局数组
+
+$_GET['user']	//获取user的值
+
+$_POST['user']	//获取user的值
+
+$_COOKIE['name']//获取name的值
+
+array('0'=>'one','1'=>'two')	//数组格式
+如果直接从1=>'two'开始的话，索引就没有0
+
+count(arr)	//返回数组的长度
+
+implode(';',arr)	//用分号将arr组成字符串
+
+preg_grep(re,arr)	//把匹配成功的数组元素组成一个新数组返回
+
+array_search(a,arr)	//如果在arr中找到a，返回键名，否则返回false
+
+array_pop(arr)		//取出数组的最后一个元素
+
+arr_push(arr,a)		//向arr数组中加入a元素
+
+array_unique(arr)	//删除arr数组中的重复元素
+
+面向对象
+
+class Sport{
+  const a='asasd';//定义常量
+  function __construct($name,$age){
+    $this->name=$name;
+    $this->age=$age;
+  }
+
+  public function basketball(){
+
+  }
+}
+$sport=new Sport();
+echo $sport->basketball();//方法的调用
+echo $sport->name;	//变量的调用
+echo Sport::a;	//常量的调用
+
+
+连接数据库
+
+$x=mysql_connect('localhost','root',123456)	//连接数据源，账号密码
+
+mysql_select_db('first',$x)	//选择名字叫first的数据库
+
+$a=mysql_query('firstt')	//获取first数据库中firstt表的数据
+
+$b=mysql_fetch_array($a)	//将获取的数据转化为数组
+//例子:Array ( [0] => 1 [id] => 1 [1] => wang [name] => wang )
+
+$b=mysql_fetch_object($a)	//将获取的数据转化为对象
+
+$b=mysql_fetch_row($a)	//将获取的数据转化为数组
+//例子:Array ( [0] => 1 [1] => wang)
+
+用pdo连接数据库
+
+$x=new PDO(dsn,name,password)	//创建对象
+		//dsn格式为: 'mysql:host=localhost;dbname=first'
+
+
+**
+
+************************************************************
+
+cookie操作
+
+setcookie(name,value,time)//设置cookie,名称，值，有效期
+
+$_cookie[name]	//读取cookie中的name的值
+
+setcookie(name,'',time()-1)//删除cookie
+
+
+正则
+
+\btm\b	//表示匹配单词tm，而不是单词的一部分
+\Btm\B	//表示匹配单词的一部分，而不是单词tm
+[ac]	//表示只要出现a或者c就匹配成功，只能是一个字符
+[^1-9]	//匹配不以数字1-9的字符
+.	//表示任意字符
+
+量词
+
+?	//表示0或1次
++	//表示大于等于1次
+*	//表示大于等于0次
+{n}	//表示n次
+{n,}	//表示大于等于n次
+{n,m}	//表示大于等于n次，小于等于m次
+
+服务器属性
+
+$_SERVER['PHP_SELF']		//返回当前执行脚本的文件名。
+$_SERVER['GATEWAY_INTERFACE']	//返回服务器使用的 CGI 规范的版本。
+$_SERVER['SERVER_ADDR']	//返回当前运行脚本所在的服务器的 IP 地址。
+$_SERVER['SERVER_NAME']	//返回当前运行脚本所在的服务器的主机名
+			//（比如 www.w3school.com.cn）。
+$_SERVER['SERVER_SOFTWARE']	//返回服务器标识字符串
+				//（比如 Apache/2.2.24）。
+$_SERVER['SERVER_PROTOCOL']	//返回请求页面时通信协议的名称和版本
+				//（例如，“HTTP/1.0”）。
+$_SERVER['REQUEST_METHOD']	//返回访问页面使用的请求方法
+				//（例如 POST）。
+$_SERVER['REQUEST_TIME']	//返回请求开始时的时间戳
+				//（例如 1577687494）。
+$_SERVER['QUERY_STRING']	//返回查询字符串，
+				//如果是通过查询字符串访问此页面。
+$_SERVER['HTTP_ACCEPT']		//返回来自当前请求的请求头。
+$_SERVER['HTTP_ACCEPT_CHARSET']	//返回来自当前请求的 Accept_Charset 头
+				//（ 例如 utf-8,ISO-8859-1）
+$_SERVER['HTTP_HOST']		//返回来自当前请求的 Host 头。
+$_SERVER['HTTPS']		//是否通过安全 HTTP 协议查询脚本。
+$_SERVER['REMOTE_ADDR']		//返回浏览当前页面的用户的 IP 地址。
+$_SERVER['REMOTE_HOST']		//返回浏览当前页面的用户的主机名。
+$_SERVER['REMOTE_PORT']//返回用户机器上连接到 Web 服务器所使用的端口号
+$_SERVER['SCRIPT_FILENAME']	//返回当前执行脚本的绝对路径。
+$_SERVER['SERVER_ADMIN']//该值指明了Apache服务器配置文件中的			//SERVER_ADMIN参数
+$_SERVER['SERVER_PORT']	//Web 服务器使用的端口。默认值为 “80”。
+$_SERVER['SERVER_SIGNATURE']	//返回服务器版本和虚拟主机名。
+$_SERVER['PATH_TRANSLATED']	//当前脚本所在文件系统的基本路径。
+$_SERVER['SCRIPT_NAME']		//返回当前脚本的路径。
+$_SERVER['SCRIPT_URI']		//返回当前页面的 URI。

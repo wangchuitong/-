@@ -1,0 +1,157 @@
+﻿
+安装mysql服务
+mysqld -install
+
+开启服务
+net start mysql
+
+停止服务
+net stop mysql
+
+
+
+//创建数据表
+create table <表名> (<字段名1> <类型 1> [,..<字段名n> <类型 n>])
+
+mysql	> create table MyClass(    
+	> id int(4) not null primary key auto_increment,   
+	> name char(20) not null,   
+	> sex int(4) not null default '0',   
+	> degree double(16,2));
+
+格式:name  type  not null default'1' primary key  reference_definition
+name  	//数据名
+type	//数据类型
+not null//表示不能是空值，默认为null
+default	//表示默认值是多少
+primary key//表示为主键,一个表只能有一个主键
+refer	//注释
+数据名	类型	  	null	key	dafault		extra
+id	int(4)	  	no	pri	null		auto_increment
+name	char(20)  	no		null		
+sex 	int(4)	  	no		0
+degree	double(16,2)	yes		null
+
+//显示firstt数据表的结构
+mysql>show columns from firstt;
+
+//显示firstt数据表中数据名为name的结构
+mysql>desc firstt name;
+
+//在表MyClass 中添加了一个字段 passtest,类型为int(4),默认值为 0 
+mysql> alter table MyClass add passtest int(4) default '0' ;
+
+
+//删除名叫first的数据库
+mysql>drop database first;
+
+//删除表名为MyClass 的表   
+mysql> drop table MyClass; 
+
+
+//插入数据    
+mysql> insert into myclass values(1,'tom',92.12),(2,'ys',231);
+
+//查询所有行    
+mysql> select * from MyClass; 
+
+//查看表MyClass 中前 2 行数据    
+mysql> select * from MyClass order by id limit 0,2;
+
+
+//删除表MyClass中编号为1的记录   
+mysql> delete from MyClass where id=1; 
+
+//删除表中数据并且重置auto_increment
+mysql>truncate message;
+
+//修改表中数据   
+mysql> update MyClass set name='Mary' where id=1;
+
+mysql> update MyClass set name='Mary' where id=1 and age=21; 
+
+
+//在表MyClass 名字更改为 YouClass   
+mysql> rename table MyClass to YouClass; 
+
+
+alter table firstt add
+
+modify	//修改已有数据的结构
+
+更改列类型
+alter table 表名 modify COLUMN 列名 VARCHAR(10) NOT NULL DEFAULT ''
+
+更改列名
+alter table 表名 change COLUMN 列名 新的列名 VARCHAR(10) NOT NULL DEFAULT ''
+
+更改编码
+
+表
+alter table list character set utf8;
+
+
+库
+alter database first character set utf8;
+
+字段
+alter table list modify name varchar(50) character set utf8;
+
+
+
+
+***************************************************************
+(当条件省略是表示全部)
+_______________
+
+插入数据insert
+
+insert into 表名(列名1，列名2) values(值1，值2)
+
+_______________
+
+查询表中数据select
+
+select 列名 
+from 数据表名 
+where 满足的条件
+group by 分组的条件
+order by 排序的条件
+having	满足的第二个条件
+limit  限定的条件
+
+/*查询根据time降序，然后取前3个*/
+select * from story ORDER BY time desc limit 3;
+
+多表查询
+
+select 字段名 from 表1,表2 where 表1.字段名=表2.字段名 and 其他条件
+
+_______________
+
+修改数据update
+
+update 表名 set 列名1=值1,列名1=值1 where 条件
+
+_______________
+
+删除数据delete
+
+delete from 表名 where 条件
+
+_______________
+
+导出数据
+
+mysqldump -uroot -proot 数据库名>f:\sql.txt
+
+_______________
+
+导入数据
+
+mysqldump -uroot -proot 数据库名<f:\sql.txt
+
+导入数据库(文件在bin里)
+
+mysql>source new.sql
+***************************************************************

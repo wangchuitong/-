@@ -1,0 +1,496 @@
+﻿a~b{}   //表示选择与a同一父节点的b元素
+a:not(b){}  //表示a拥有样式，但是不想让a的子元素b拥有
+li:nth-child(3){} //表示第三个li
+li:nth-child(3n){} //表示倍数是3的元素
+box-shadow:apx bpx cpx #xxx;  //表示阴影，a是x轴偏移，c是投影长度
+transform:rotate(45deg) //表示旋转45度
+
+
+pointer-events:none 	//取消鼠标事件
+
+
+
+
+
+word-break:break-all		//折断单词换行
+
+
+
+1.rotate(<angle>)//旋转元素
+
+<angle>是一个角度,单位deg，正数是顺时针，负数为逆时针
+
+2.scale(<number>[, <number>])//缩放元素
+
+scale(0.8,1.2)	//宽度变为80%，高度变为120%
+scale(-1,-1)	//水平翻转，垂直翻转
+
+3.translate(<translation-value>[, <translation-value>])//移动元素
+
+4.skew(<angle> [,<angle>]):倾斜元素
+5.matrix(<number>,<number>,<number>,<number>,<number>,<number>):矩阵变形
+6.perspective(length):透视
+示例：
+transform:rotate(90deg) scale(1.5,0.8) translate(100px,50px) 
+skew(45deg,45deg)
+
+border-radius	//圆角边框
+border-image	//图片边框
+
+
+transition	//过渡效果（与display属性不兼容）
+	transition: width 2s;//宽度变化将在2秒内完成
+
+transform	//对元素进行移动、缩放、转动、拉长或拉伸
+值有:
+translate(50px,100px)	//向右移动50像素，向下移动100像素
+translate(50%,50%)	//百分比是相对于本身宽高
+
+rotate(30deg)	//顺时针旋转30度,负值为逆时针
+
+scale(2,4)	//宽度变2倍，高度变4倍
+
+skew(30deg,20deg)	//x方向倾斜30度，y方向倾斜20度
+
+rotateX(30deg)	//围绕 X 轴把元素翻转 30 度
+
+
+
+keyframes	//动画
+.div1{			//div宽度从100像素变成200像素，在5秒内
+   width: 100px;
+   height: 100px;
+   background:red;
+   -webkit-animation:ss 5s;
+}
+@-webkit-keyframes ss {
+   from{width: 100px;}
+   to{width: 200px;}
+}
+
+div{
+   width: 100px;
+   height: 100px;
+   background:red;
+   -webkit-animation:ss 5s;
+}
+@-webkit-keyframes ss {
+   0%{
+      background: yellow;
+   }
+   50%{
+      background: blue;
+   }
+   75%{
+      background: green;
+   }
+   100%{
+      background: orange;
+   }
+}
+
+@keyframes	规定动画
+animation	所有动画属性的简写属性，除了 animation-play-state 属性
+animation-name	规定 @keyframes 动画的名称
+animation-duration	规定动画完成一个周期所花费的秒或毫秒。默认是 0
+animation-timing-function	规定动画的速度曲线。默认是 "ease"	
+animation-delay		规定动画何时开始。默认是 0
+animation-iteration-count	规定动画被播放的次数。默认是 1
+animation-direction	//规定动画是否在下一周期逆向地播放。
+			//默认是 "normal",值有alternate
+animation-play-state	规定动画是否正在运行或暂停。默认是 "running"
+animation-fill-mode	规定对象动画时间之外的状态
+
+
+
+div{resize:both;overflow:auto;}	//表示可以由用户控制div大小
+
+
+
+一个旋转导航
+ .div1:hover ul li{
+            -webkit-transform:none;
+            opacity: 1;
+        }
+ul li{
+   text-align: center;
+   border: 1px solid #cdd0d1;
+   background: inherit;
+   opacity: 0;
+   -webkit-transition:opacity .4s,-webkit-transform .5s;//变化过渡时间
+   -webkit-transform: rotateY(90deg);
+}
+.li1{
+   -webkit-transition-delay:100ms ;	//表示延时多少时间后进行
+}
+.li2{
+   -webkit-transition-delay:150ms ;
+}
+.li3{
+   -webkit-transition-delay:200ms ;
+}
+
+*************************************************************************
+
+选择器
+
+E~F		//选择E后面所有的F元素
+
+属性选择器
+
+[attr=val]	//匹配指定属性名为指定值的元素
+[attr*=val]	//匹配指定属性名中包含指定值的元素
+[attr^=val]	//匹配指定属性名的值的开头是指定值的元素
+[attr$=val]	//匹配指定属性名的值的结尾是指定值的元素
+
+结构性伪类选择器
+
+:root		//表示选择html元素
+:not(h1)	//表示排除h1元素
+:empty		//选择元素内容(innerHTML)为空的元素
+
+:first-child	//父元素的第一个子元素
+:last-child	//父元素的最后一个子元素
+:nth-child(n)	//n从1开始,父元素的第n个元素,even表示偶数,3n表示3的倍数
+
+UI元素状态伪类选择器
+
+:hover	//表示移动到元素上面时元素所使用的样式
+:active	//表示元素被激活(鼠标在元素上按下还没有松开)时使用的样式
+:focus	//表示元素获得光标焦点时使用的样式
+:enabled//表示元素处于可用状态时使用的样式
+:disabled//表示元素处于不可用状态时使用的样式
+
+:checked//表示元素处于被选取状态时使用的样式
+:selection//表示元素处于被选中状态时使用的样式
+
+添加内容
+
+div:before{	//增加字符串
+  content:'asdd';
+}
+
+content:url(图片地址)	//增加图片
+
+content:attr(alt)	//增加元素指定属性的值
+
+在前面加编号
+
+h1{
+ counter-increment:mycounter;//mycounter可为任意字符串,但必须与before对应
+}			     //表示使用一次样式的时候计数器+1
+h1:before{
+ content:counter(mycounter);//于上面对应
+}
+
+加文字
+h1:before{
+ content:'第'counter(mycounter)'章';
+}
+
+编号种类
+
+counter(mycounter,upper-alpha)	//upper-alpha表示大写字母编号
+				//upper-roman表示大写罗马数字
+
+h1{
+  counter-reset:scounter;	//表示重置其他计数器
+}
+
+嵌套
+h1{
+ counter-increment:h1;
+ counter-reset:h2;
+}
+h1:before{
+ content:counter(h1)'.';
+}
+h2:before{
+ content:counter(h1)'-'counter(h2)'.'
+}
+
+字体样式
+
+text-shadow:x y length color 	//x表示往右
+				//y表示往下
+				//length表示阴影的宽度
+				//color表示阴影的颜色
+				//多个阴影可用逗号连接
+
+
+盒子模式
+box-sizing:content-box;		//设置的宽度为内容宽度
+
+box-sizing:border-box;		//设置的宽度等于内容宽度加内边距加边框宽
+
+
+元素变形transform	//元素进行变换，周边元素位置不受影响
+
+rotate(45deg)	//元素顺时针旋转45度,旋转后水平方向改变
+scale(1.5,2)	//将元素水平放大1.5倍，垂直放大2倍
+skew(30deg,30deg)	//水平向左倾斜30度，垂直向上倾斜30度，方向左上角向上和向左
+translate(30px,30px)	//向右移动30像素，向下移动30像素
+
+变换基准点
+
+transform-origin:left bottom;	//修改基准点为左下角，默认为中心
+
+
+过渡功能transition
+
+
+transition:property duration timing-function
+
+property  表示对什么属性进行过渡
+duration  表示在多长时间内完成过渡
+timine-function  表示通过什么方式进行过渡
+
+方法函数
+linear		//匀速
+ease-in		//开始慢，后面快
+ease-out  	//开始快，后面慢
+ease 		//开始慢，中间快，后面慢
+ease-in-out	//开始慢，中间快，后面慢
+
+动画功能animation
+
+@keyframes	规定动画
+animation	所有动画属性的简写属性，除了 animation-play-state 属性
+animation-name	规定 @keyframes 动画的名称
+animation-duration	规定动画完成一个周期所花费的秒或毫秒。默认是 0
+animation-timing-function	规定动画的速度曲线。默认是 "ease"	
+animation-delay		规定动画何时开始。默认是 0
+animation-iteration-count	规定动画被播放的次数。默认是 1
+animation-direction	//规定动画是否在下一周期逆向地播放。
+			//默认是 "normal",值有alternate
+animation-play-state	规定动画是否正在运行或暂停。默认是 "running"
+animation-fill-mode	规定对象动画时间之外的状态
+
+
+
+div{resize:both;overflow:auto;}	//表示可以由用户控制div大小
+
+盒布局
+
+父
+display:-webkit-box;		//定义内容为盒布局
+
+-webkit-box-orient		//表示子容器的排列方式
+  horizontal|inline-axis	//水平排列
+  vertical|block-axis		//垂直排列
+
+-webkit-box-direction		//表示子容器的排列顺序
+  normal			//默认排列
+  reverse			//反转排列
+
+-webkit-box-algin		//表示子容器的垂直对齐方式
+  start				//顶部对齐
+  center			//垂直居中
+  end				//底部对齐
+  stretch			//拉伸到与父容器等高
+
+-webkit-box-pack		//表示子容器的水平对齐方式
+  start				//左部对齐
+  center			//水平居中
+  end				//右部对齐
+  justify			//表示水平等分父容器宽度
+
+
+
+盒布局display: -webkit-box;
+
+.box{
+  display: -webkit-box;
+  height: 100px;
+  background: red;
+}
+.left{
+  width: 100px;
+  background: yellow;
+}
+.content{
+  width: 200px;
+  background: orange;
+}
+.right{
+  width: 100px;
+  background: blue;
+}
+
+弹性盒布局
+
+<div class="wrap">
+  <div class="one"></div>
+  <div class="two"></div>
+  <div class="three"></div>
+</div>
+
+.wrap{		//设置为盒布局模型
+  display:box;
+  display:-moz-box;
+  display:-webkit-box;
+  width:600px;
+  height:200px;
+}
+.one{
+  -moz-box-flex:3;
+  -webkit-box-flex:3;
+  box-flex:3;
+}
+.two{
+  -moz-box-flex:2;
+  -webkit-box-flex:2;
+  box-flex:2;
+}
+.three{
+  -moz-box-flex:1;
+  -webkit-box-flex:1;
+  box-flex:1;
+}
+
+//把父容器wrap平均分为6等分，one 3份，two 2份，three 1份
+//如果其中有固定宽度，则将父容器宽度减去固定宽度再等分
+
+box属性
+
+box-orient	//表示子容器的排列方式
+  horizontal|inline-axis	//水平排列
+  vertical|block-axis		//垂直排列
+
+box-direction	//表示子容器的排列顺序
+  normal	//默认排列
+  reverse	//反转排列
+
+box-algin	//表示子容器的垂直对齐方式
+  start		//顶部对齐
+  center	//垂直居中
+  end		//底部对齐
+  stretch	//拉伸到与父容器等高
+
+box-pack	//表示子容器的水平对齐方式
+  start		//左部对齐
+  center	//水平居中
+  end		//右部对齐
+  justify	//表示水平等分父容器宽度
+
+
+
+.content{		//自适应宽度
+  -webkit-box-flew:1	
+  background: orange;
+}
+
+
+
+
+改变元素显示顺序
+.left{			//右边
+  width: 100px;
+  background: yellow;
+  -webkit-box-ordinal-group:3
+}
+.content{			//中间
+  width: 200px;
+  background: orange;
+  -webkit-box-ordinal-group:2
+}
+.right{			//显示在左边
+  width: 100px;
+  background: blue;
+  -webkit-box-ordinal-group:1
+}
+
+改变排列方向
+
+.box{
+  display: -webkit-box;
+  height: 100px;
+  background: red;
+  -webkit-box-orient:vertical;	//垂直方向
+}
+
+
+高度自适应
+
+
+.box{
+  display: -webkit-box;
+  height: 100px;
+  background: red;
+  -webkit-box-orient:vertical;	//垂直方向
+}
+.left{
+  box-sizing:border-box;
+}
+
+宽度自适应
+
+.box{
+  display: -webkit-box;
+  height: 100px;
+  background: red;
+  -webkit-box-orient:horizontal;/水平方向
+}
+.left{
+  box-sizing:border-box;
+}
+
+弹性盒布局消除空白
+
+.content{		//自适应宽度
+  -webkit-box-flew:1	
+  background: orange;
+}
+
+多个元素适应box-flex	//均等分
+
+.left{			//自适应宽度
+  -webkit-box-flew:1	
+  background: orange;
+}.content{		//自适应宽度
+  -webkit-box-flew:1	
+  background: orange;
+}.right{		//自适应宽度
+  -webkit-box-flew:1	
+  background: orange;
+}
+
+盒布局的居中
+
+-webkit-box-algin:center	//垂直居中
+-webkit-box-pack:center		//水平居中
+
+box-algin和box-pack属性值
+start	//左对齐
+center	//居中
+end	//右对齐
+
+
+根据浏览器来使用样式
+
+@media screen and (min-width:600px) and (max-width:900px){}
+//窗口宽度在大于600小于900的时候使用的样式
+
+
+
+颜色样式
+background-color:rgba(255,0,0,0.5)
+
+
+background-origin 属性规定背景图片的定位区域		//content-box、padding-box 或 border-box
+
+
+
+渐变颜色
+ie:   	filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr=#ff6600, endColorStr=#339900);
+360:	linear-gradient(to bottom,#ffffff 0,#7eadd9 100%);
+
+
+媒体查询
+@media
+
+
+
+
+
+

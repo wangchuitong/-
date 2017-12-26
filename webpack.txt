@@ -1,0 +1,36 @@
+webpack.config.js:
+
+var path = require('path');
+var HtmlWebpackPlugin=require('html-webpack-plugin');
+
+
+module.exports = {
+    entry:{
+        app:path.resolve(__dirname, 'app/main.js'),
+        build:path.resolve(__dirname,'app/view.js')
+    },
+    output: {
+        path: path.resolve(__dirname, 'build'),
+        filename: '[name].js'
+    },
+    plugins: [new HtmlWebpackPlugin()]
+}
+
+entry属性表示输入口
+
+{	//表示有两个输入口，名字分别为app和build
+  app:path.resolve(__dirname, 'app/main.js'),
+  build:path.resolve(__dirname,'app/view.js')
+}
+
+output属性表示输出口
+
+{	//表示输出文件放在build文件夹，
+	//[name]表示变量，分别表示上面的app和build
+  path: path.resolve(__dirname, 'build'),
+  filename: '[name].js'
+}
+
+plugins属性加载插件
+
+new HtmlWebpackPlugin()	//动态加载js文件

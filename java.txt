@@ -1,0 +1,258 @@
+修饰符		当前类		同一包内	子孙类		其他包	(Y表示可访问)
+public		Y		Y		Y		Y
+protected	Y		Y		Y		N
+default		Y		Y		N		N
+private		Y		N		N		N
+
+
+转义字符
+\ddd
+
+
+
+Thread.sleep(1000)	   // 休眠1秒
+
+
+方法声明
+
+修饰符 返回值类型 方法名 (参数类型 参数名){
+    ...
+    方法体
+    ...
+    return 返回值;
+}
+
+
+
+重写与重载之间的区别
+
+区别点		重载方法	重写方法
+参数列表	必须修改	一定不能修改
+返回类型	可以修改	一定不能修改
+异常		可以修改	可以减少或删除，一定不能抛出新的或者更广的异常
+访问		可以修改	一定不能做更严格的限制（可以降低限制）
+
+
+
+
+
+字符串处理
+
+str.concat(str2)	//拼接字符串
+str.length()		//返回字符串的长度
+str.charAt(index)	//返回指定索引的字符
+str.compareTo(str2)	//比较字符串，相同返回0，大于返回大于0的整数
+str.equals(str2)	//比较字符串，相等返回true
+str.equalsIgnoreCase(str2)//忽略大小写进行equals比较
+str.substring(beginIndex,endIndex)//返回对应索引内的字符串
+str.startsWith(str2)	//判断前缀是否与str2一致，是返回true
+str.endsWith(str2)	//判断后缀是否与str2一致，是返回true
+str.indexOf(str2)	//在str中寻找str2第一次出现的索引，没有返回-1
+str.indexOf(str2,index)	//在str中从索引index后面开始寻找str2第一次出现的索引，没有返回-1
+str.lastIndexOf(str2)	//在str后面开始寻找str2第一次出现的索引，没有返回-1
+str.lastIndexOf(str2,index)//在str中从索引index前面开始寻找str2第一次出现的索引，没有返回-1
+str.toLowerCase()	//返回小写的字符串
+str.toUpperCase()	//返回大写的字符串
+str.trim()		//返回去除首尾空字符串
+
+http操作
+request:
+1、request.getRequestURL()
+	//返回的是完整的url，包括Http协议，端口号，servlet名字和映射路径，但它不包含请求参数。
+
+2、request.getRequestURI()
+	//得到的是request URL的部分值，并且web容器没有decode过的
+
+3、request.getContextPath() 
+	//返回项目名.
+
+4、request.getServletPath() 
+	//返回调用servlet的部分url.
+
+5、request.getQueryString() 
+	//返回url路径后面的查询字符串
+url：/test/d
+getRequestURL:http://172.16.65.37:8080/test/d
+getRequestURI:/test/d
+getContextPath:/test
+getServletPath:/d
+getQueryString:asdd=ddd
+
+
+
+
+response:
+response.setStatus(num)	//设置响应状态
+response.setHeader("Location", url)	//设置location，告诉浏览器跳转页面
+
+ServletConfig 
+
+public void init(ServletConfig config) throws ServletException {
+   this.config = config;
+}
+
+<servlet>
+  	<servlet-name>url1</servlet-name>
+  	<servlet-class>test.test</servlet-class>
+  	<!--配置ServletConfigDemo1的初始化参数 -->
+	<init-param>
+	        <param-name>name</param-name>
+	        <param-value>gacl</param-value>
+	</init-param>
+</servlet>
+
+config.getInitParameter("name")	//gacl
+
+ServletContext	全局对象
+
+ServletContext context = this.getServletConfig().getServletContext()
+ServletContext context = this.getServletContext()
+
+
+<context-param>
+     <param-name>name</param-name>
+     <param-value>wwd</param-value>
+</context-param>
+ServletContext context = this.getServletContext()
+String name=context.getInitParameter("name");
+
+
+//请求转发
+RequestDispatcher rd = context.getRequestDispatcher("/d2");
+
+
+
+
+
+
+//后台说明下载文件
+	String path=config.getServletContext().getRealPath("/download/show.jpg");
+	String name=path.substring(path.lastIndexOf("\\")+1);
+	resp.setHeader("content-disposition","attachment;filename="+name);
+	InputStream in = new FileInputStream(path);
+	int len=0;
+	byte[] buffer=new byte[1024];
+	OutputStream out = resp.getOutputStream();
+	while((len=in.read(buffer))>0){
+		out.write(buffer,0,len);
+	}
+	in.close();
+
+
+数据结构
+结论：最常用的是ArrayList，HashSet，HashMap，Array。
+
+注意：
+
+list 	 
+3、List，可以通过get()方法来一次取出一个元素。使用数字来选择一堆对象中的一个，get(0)...。(add/get) 
+4、一般使用ArrayList。用LinkedList构造堆栈stack、队列queue。
+
+5、Map用 put(k,v) / get(k)，还可以使用containsKey()/containsValue()来检查其中是否含有某个key/value。 
+HashMap会利用对象的hashCode来快速找到key。 
+* hashing 
+哈希码就是将对象的信息经过一些转变形成一个独一无二的int值，这个值存储在一个array中。 
+我们都知道所有存储结构中，array查找速度是最快的。所以，可以加速查找。
+
+发生碰撞时，让array指向多个values。即，数组每个位置上又生成一个梿表。
+
+6、Map中元素，可以将key序列、value序列单独抽取出来。 
+使用keySet()抽取key序列，将map中的所有keys生成一个Set。 
+使用values()抽取value序列，将map中的所有values生成一个Collection。
+
+为什么一个生成Set，一个生成Collection？那是因为，key总是独一无二的，value允许重复。
+
+
+ 			有序否 允许元素重复否 
+    Collection 		否 	是 
+    List 		是 	是 
+    AbstractSet 	否 	否 
+    HashSet 		否 	否 
+    TreeSet 		是（用二叉树排序） 否 
+    AbstractMap 	否 使用key-value来映射和存储数据，Key必须惟一，value可以重复 
+    HashMap 		否 使用key-value来映射和存储数据，Key必须惟一，value可以重复 
+    TreeMap 		是（用二叉树排序） 使用key-value来映射和存储数据，Key必须惟一，value可以重复
+
+
+list   可实例类 ArrayList<V>
+
+
+方法：
+add(e)			//添加元素
+add(index,e)		//向指定位置插入元素，其后续元素索引加1
+remove(index)		//删除指定位置的元素
+remove(e)		//从前面开始删除一个指定元素
+clone()			//返回一个复制列表
+size()			//返回列表长度
+contains(e)		//判断是否包含指定元素
+trimToSize()		//将容量调整为当前大小
+isEmpty()		//判断列表是否为空
+indexOf(e)		//返回首次出现指定元素的索引，没有返回-1
+lastIndexOf(e)		//返回最后一次出现指定元素的索引，没有返回-1
+toArray()		//返回所有元素的数组
+get(index)		//返回指定位置的元素
+clear()			//移除所有元素
+removeRange(start,end)	//移除start（包括）到end（不包括）直接的所有元素，后续元素接上
+addAll(col)		//添加col中的所有元素（col为collection数据结构）
+addAll(index,col)	//想指定位置添加col中的所有元素
+set(index,e)		//用指定元素替换指定位置上的元素，返回被替换的元素
+iterator()
+
+map	可实例类 HashMap<K,V>
+
+方法
+clear()			//移除所有映射关系
+clone()			//返回该对象的浅表副本，并不复制键和值本身
+containsKey(key)	//判断是否包含指定键的映射关系
+containsValue(value)	//判断是否有键映射到指定值
+entrySet()		//返回映射关系的set视图
+get(key)		//返回指定键所映射的值，没有则返回null
+isEmpty()		//判断是否包含映射关系
+keySet()		//返回所有键的set视图
+put(key,value)		//关联指定键和指定值
+putAll(map)		//将指定对象键值映射复制到本身，有的替换掉
+remove(key)		//移除指定键的映射关系
+size()			//返回对象中包含的映射数
+values()		//返回包含值的Collection视图
+
+
+
+
+
+request
+
+getAttributeNames()	//返回当前请求的所有属性的名字集合
+
+getAttribute(String name)	//返回name指定的属性值
+
+getCookies()		//返回客户端发送的Cookie
+
+getsession()		//返回和客户端相关的session，如果没有给客户端分配session，则返回null
+
+getsession(boolean create)	//返回和客户端相关的session，如果没有给客户端分配session，则创				建一个session并返回
+
+getParameter(String name)	//获取请求中的参数，该参数是由name指定的
+
+getParameterValues(String name)	//返回请求中的参数值，该参数值是由name指定的
+
+getCharacterEncoding()		//返回请求的字符编码方式
+
+getContentLength()		//返回请求体的有效长度
+
+getInputStream()		//获取请求的输入流中的数据
+
+getMethod()		//获取发送请求的方式，如get、post
+
+getParameterNames()	//获取请求中所有参数的名字
+
+getProtocol()		//获取请求所使用的协议名称
+
+getReader()		//获取请求体的数据流
+
+getRemoteAddr()		//获取客户端的IP地址
+
+getRemoteHost()		//获取客户端的名字
+
+getServerName()		//返回接受请求的服务器的名字
+
+getServerPath()		//获取请求的文件的路径

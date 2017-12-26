@@ -1,0 +1,120 @@
+﻿var http=new XMLHttpRequest();	//创建一个http请求对象
+http.onreadystatechange=function(){	//添加事件函数
+        				//状态改变时触发事件
+    console.log(http.readyState);	
+    if(http.readyState==4){
+        console.log(http.status);
+        if(http.status==200){
+            console.log(http);
+            document.getElementById('div1').innerHTML=http.response;
+        }
+    }
+}
+
+http.open('post','php/session.php',false);	//POST传送数据	
+http.send(data);
+
+http.open('get','php/session.php?name=ad&ag=d',false);//GET传送数据	
+http.send(null);
+
+XMLHttpRequest对象有三个属性
+
+1、onreadystatechange属性:存有处理服务器的函数
+
+2、readyState属性:存有服务器响应的状态信息
+
+可能的值有:
+  0  请求未初始化（在调用 open() 之前） 
+  1  请求已提出（调用 send() 之前）  
+  2  请求已发送（这里通常可以从响应得到内容头部）  
+  3  请求处理中（响应中通常有部分数据可用，但是服务器还没有完成响应） 
+  4  请求已完成（可以访问服务器响应并使用它）
+
+3、responseText属性:通过他可以取回服务器返回的数据
+
+要想把请求发送到服务器，我们就需要使用 open() 方法和 send() 方法。  
+open() 方法需要三个参数。
+第一个参数定义发送请求所使用的方法（GET 还是 POST）。
+第二个参数规定服务器端脚本的 URL。
+第三个参数规定应当对请求进行异步地处理。
+
+成功是的信息:x.readyState:4
+	     x.status:200
+	     x.statusText:OK
+
+
+
+
+实例：
+
+ajax({
+            url: "./TestXHR.aspx",              //请求地址
+            type: "POST",                       //请求方式
+            data: { name: "super", age: 20 },        //请求参数
+            dataType: "json",
+            success: function (response, xml) {
+                // 此处放成功后执行的代码
+            },
+            fail: function (status) {
+                // 此处放失败后执行的代码
+            }
+        });
+
+        function ajax(options) {
+            options = options || {};
+            options.type = (options.type || "GET").toUpperCase();
+            options.dataType = options.dataType || "json";
+            var params = formatParams(options.data);
+
+            //创建 - 非IE6 - 第一步
+            if (window.XMLHttpRequest) {
+                var xhr = new XMLHttpRequest();
+            } else { //IE6及其以下版本浏览器
+                var xhr = new ActiveXObject('Microsoft.XMLHTTP');
+            }
+
+            //接收 - 第三步
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    var status = xhr.status;
+                    if (status >= 200 && status < 300) {
+                        options.success && options.success(xhr.responseText, xhr.responseXML);
+                    } else {
+                        options.fail && options.fail(status);
+                    }
+                }
+            }
+
+            //连接 和 发送 - 第二步
+            if (options.type == "GET") {
+                xhr.open("GET", options.url + "?" + params, true);
+                xhr.send(null);
+            } else if (options.type == "POST") {
+                xhr.open("POST", options.url, true);
+                //设置表单提交时的内容类型
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send(params);
+            }
+        }
+        //格式化参数
+        function formatParams(data) {
+            var arr = [];
+            for (var name in data) {
+                arr.push(encodeURIComponent(name) + "=" + encodeURIComponent(data[name]));
+            }
+            arr.push(("v=" + Math.random()).replace(".",""));
+            return arr.join("&");
+        }
+
+
+
+xhr.responseType
+
+
+text            DOMString
+arraybuffer     ArrayBuffer
+blob            Blob
+document        Document
+
+
+

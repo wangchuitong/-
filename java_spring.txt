@@ -1,0 +1,58 @@
+﻿依赖注入
+
+set注入方式
+例子:
+public class test{
+	private int age;
+	private Person person;
+	public void setAge(int age){
+		this.age=age;
+	}
+	public void setPerson(Person person){
+		this.person=person;
+	}
+}
+
+
+spring.xml文件配置:
+<bean id="beanId" class="test.test">
+	<property name="age" value="33"/>	//name属性要与类的属性一致
+	<property name="person" ref="person"/>	//ref 注入id为person的bean
+	<property name="list">			//给list对象注入
+		<list>
+			<value>张三</value>
+		  	<value>李四</value>
+		</list>
+	</property>
+	<property name="prop">			//给prop对象注入
+		<props>
+			<prop key="name">张三</prop>
+		  	<prop key="age">62</prop>
+			<prop key="area">浙江</prop>
+		</props>
+	</property>
+	<property name="map">			//给map对象注入
+		<map>
+			<entry  key="name" value="李四"/>
+			<entry  key="age" value="6222"/>
+			<entry  key="area" value="浙江"/>
+		</map>
+	</property>
+</bean>
+
+//给对象赋值
+<bean id="person" class="test.Person">
+	<property name="name" value="wamh" />
+	<property name="age" value="33" />
+</bean>
+
+
+//给list对象赋值
+<bean id="person2" class="test.Person">
+	<property name="name" value="wamh" />
+	<property name="age" value="33" />
+</bean>
+
+
+调用方法注入对象属性
+new ClassPathXmlApplicationContext("appContext.xml")

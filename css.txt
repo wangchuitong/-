@@ -1,0 +1,182 @@
+﻿<link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+
+属性选择器:
+[attribute]			//用于选取带有指定属性的元素
+[attribute=value]		//用于选取带有指定属性和值的元素
+[attribute~=value]		//用于选取属性值中包含指定词汇的元素
+[attribute|=value]		//用于选取带有以指定值开头的属性值的元素，该值必须是整个单词
+[attribute^=value]		//匹配属性值以指定值开头的每个元素
+[attribute$=value]		//匹配属性值以指定值结尾的每个元素
+[attribute*=value]		//匹配属性值中包含指定值的每个元素
+
+webkit-text-size-adjust:none;	//浏览器自动调节字体大小
+
+text-indent		//首行缩进
+
+word-spacing		//字（单词）之间的间隔
+
+letter-spacing		//与word-spacing类似，修改字符或字母之间的间隔
+
+text-transform		//文本大小写，值有：
+			none		不做任何改动
+			uppercase	全部大写
+			lowercase	全部小写
+			capitize	首字母大写
+
+text-decoration		//值有：
+			none		取消所有装饰
+			underline	下划线
+			overline	上划线
+			line-through	贯穿线
+			blink		文本闪烁
+
+white-space		//对空格、换行、tab的处理，值有：
+					空白符 		换行符		自动换行
+
+			normal		合并		忽略		允许	
+			pre		保留		保留		不允许
+			nowrap		合并		忽略		不允许
+			pre-wrap	保留		保留		允许
+			pre-line	合并		保留		允许
+
+word-break		//自动换行的处理方法
+
+			normal		使用浏览器默认的换行规则。
+			break-all	允许在单词内换行。
+			keep-all	只能在半角空格或连字符处换行
+
+outline			//元素外围的一条线，类似border
+			//从元素周围各取2px
+
+cursor			//鼠标光标，值有：
+			url		//自定义的光标
+			default		//默认光标（一个箭头）
+			auto		//默认浏览器光标
+			crosshair	//十字线
+			pointer		//一只手
+			move		//表示可移动
+			e-resize	//表示边缘可向右移动
+			ne-resize	//可向上或向右移动
+			nw-resize	//可向上或向左移动
+			n-resize	
+			se-resize
+			sw-resize	
+			s-resize
+			w-resize
+			text		//表示文本
+			wait		//表或者沙漏或者一个圈圈
+			help		//通常是一个问号或一个气球
+
+
+-webkit-user-select:none;	//无法被选中
+-moz-user-select:none;		//document.body.onselectstart = document.body.ondrag = function(){return false}
+-ms-user-select:none;
+user-select:none;
+
+
+
+ie滚动条颜色设置
+html{
+  scrollbar-face-color:green;
+  scrollbar-shadow-color:blue;
+  scrollbar-highlight-color:yellow;
+  scrollbar-3dlight-color:red;
+  scrollbar-darkshadow-color:black;
+  scrollbar-track-color:orange;
+  scrollbar-arrow-color:white;
+}
+
+谷歌滚动条样式设置
+::-webkit-scrollbar{
+   width: 150px;
+}
+::-webkit-scrollbar-track {
+  background-color: #b46868;
+} /* 滚动条的滑轨背景颜色 */
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 1);
+} /* 滑块颜色 */
+
+::-webkit-scrollbar-button {
+    background-color: #7c2929;
+} /* 滑轨两头的监听按钮颜色 */
+
+::-webkit-scrollbar-corner {
+    background-color: black;
+} /* 横向滚动条和纵向滚动条相交处尖角的颜色 */
+
+
+
+百分比
+
+属性			相对属性
+
+height			父元素的height
+width			父元素的width
+margin			父元素的width			
+line-height		本元素的font-size
+translate(x,y)		x根据自身width，y根据自身height
+font-size		父元素的font-size	
+
+
+伪类：
+:first-letter	//第一个文字样式
+:first-line	//第一行文字样式
+
+文本属性
+text-indent	//首行缩进	值：2em|12px
+
+装饰
+text-decoration	//underline下划线，overline上划线，line-through贯穿线，blink闪烁
+
+垂直对齐
+vertical-align
+值：
+top		//将元素行内框的顶端与包含该元素的行框的顶端对齐
+bottom		//将元素行内框的底端与包含该元素的行框的底端对齐
+text-top	//将元素行内框的顶端与父元素内容区的顶端对齐
+		//当父元素font-size为0时，元素顶端与基线下1像素对齐，
+		//否则，与行内框的顶端对齐
+
+text-bottom	//将元素行内框的底端与父元素内容区的底端对齐
+		//当父元素font-size为0时，元素底端与基线对齐，
+		//否则，与行内框的底端对齐
+
+middle		//将元素行内框的垂直中点与父元素基线上0.5ex处的一点对齐		
+
+
+
+表格样式
+
+table-layout 	
+值：
+auto		//表示单元格宽度随内容变大
+fixed		//表示单元格宽度固定，表宽为width和列宽和中的最大值
+
+列表
+ul
+list-style-type
+值：
+disc 			//实心圆
+circle			//空心圆
+square			//方块
+decimal			//1,2,3,4
+decimal-leading-zero	//01,02,03,04
+upper-alpha		//A,B,C,D
+lower-alpha		//a,b,c,d
+upper-roman		//Ⅰ，Ⅱ，Ⅲ
+lower-roman		//i，ii，iii
+lower-greek		//传统小写希腊符号
+armenian		//亚美尼亚符号
+georgian		//乔治序号
+none
+
+background-size		//背景图片大小
+值：
+100% 100%		//宽度100%，高100%
+cover			//剪切图片适应div
+contain			//等比例缩放，使一边到达div边界
+
+
+	

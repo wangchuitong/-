@@ -1,0 +1,360 @@
+<input type="text" ng-model="yourname" placeholder="World">
+Hello {{yourname || 'World'}}!
+文本输入指令<input ng-model="yourname"/>绑定到一个叫yourname的模型变量
+双大括号标记将yourname模型变量添加到问候语文本。
+你不需要为该应用另外注册一个事件侦听器或添加事件处理程序
+
+<html ng-app> //ng-app表示angularJs的作用域
+
+ng-controller  //指令指定控制器
+
+<body ng-app="myapp">
+</body> //通过ng-app导入指定的angularJs
+
+
+<div ng-controller="sb">
+   <h2>Welcome {{helloTo.title}} to the world of Yiibai!</h2>
+</div>  //ng-controller 告诉AngularJS什么是控制器和视图
+
+控制器的部分是：
+<script>
+   angular.module("myapp", [])
+   .controller("sb", function($scope) {
+      $scope.helloTo = {};
+      $scope.helloTo.title = "AngularJS";
+      $scope.click=function(){
+	$scope.messca='sad';
+      }
+    });
+</script>
+
+
+
+var app=angular.module(name,requires);
+//name是模块的名称,requires是被依赖注入模块的对象数组
+
+*************************************************************************
+
+app.run(function($rootScope){})//全局作用域
+
+指令：将DOM元素增强为可复用的DOM组件的属性或元素。
+值绑定：模板语法{{ }}可以将表达式绑定到视图上。
+过滤器：可以在视图中使用的函数，用来进行格式化。
+表单控件：用来检验用户输入的控件。
+
+<p ng-bind="directive"></p>
+
+ng-bind  //让标签的内容显示为变量的值
+
+ng-show  //值为true时显示，false时隐藏
+
+ng-repeat //指令所在的标签会被循环输出
+	$index 	当前索引
+	$first	是否为头元素
+	$last	是否为尾元素
+	$middle	是否为非头非尾元素
+	ng-repeat="item in items track by $index"//处理重复元素
+
+ng-click  //点击时发生事件
+
+ng-change  //当输入框发生改变时发生事件
+
+ng-init   //初始化内部作用域,例如ng-init="job='fighter'"
+
+ng-class  //字符串的时候，空格隔开多个class
+	    可以直接使用数组表示多个class          
+	    对象的时候，通过{class名:是否显示}来设置
+
+例子:ng-class="ss"	//$scope的属性
+     ng-class="[ss,dd]"	//$scope的属性
+     ng-class="{ss:dd}"	//ss是class名，dd是$scope的属性
+
+ng-style  //例子:{width:100,height:100,background:'red'}
+
+ng-if	//当表达式值为false的时候，移除该元素，变为true的时候重新插入
+
+ng-view	//将路由内容渲染到页面
+
+ng-href="{{myHref}}"
+
+ng-src="{{mySrc}}"
+
+ng-include	//包含
+例子:<div ng-include="'angular.html'"></div>
+
+ng-switch  //根据一个值来决定哪个节点显示
+
+例子:
+<ul ng-switch on="b" ng-init="b=2">
+    <li ng-switch-when="2">1</li>
+    <li ng-switch-when="1">2</li>
+    <li ng-switch-when="3">3</li>
+</ul>
+
+$scope.$apply(function(){	//执行函数，并且将变量渲染页面
+   $scope.name='asd';
+})		
+
+监视$watch
+
+$scope.$watch(变量,函数,布尔值)	
+	//函数function(newValue, oldValue, scope)
+	//布尔值为true的时候会遍历变量上的所有属性
+
+监听函数会在初始化的时候调用一次
+
+var dereg = $scope.$watch('someModel.someProperty', callbackOnChange);
+dereg();	//注销监视器
+
+
+过滤器
+
+uppercase   //转换为大写
+lowercase   //转换为小写
+currency    //格式化数字为货比格式
+filter      //从数组项中选择一个子集
+orderBy     //根据某个表达式排列数组
+number      //保留小数点后几位
+
+filter参数类型
+
+字符串	//返回所有包含这个字符串的元素。如果我们想返回不包含该字符串的元素，在参数前加!符号。
+? 
+对象	//AngularJS会将待过滤对象的属性同这个对象中的同名属性进行比较，如果属性值是字符串就会判断是否包含该字符串。如果我们希望对全部属性都进行对比，可以将$当作键名。
+? 
+函数	//对每个元素都执行这个函数，返回非假值的元素会出现在新的数组中并返回。
+
+例子：
+$scope.ss=function(str){
+  return str[0]===str[0].toUpperCase();
+}
+
+使用:{{arr|filter:ss}}	//筛选出首字母是大写的元素
+
+
+自定义过滤器
+myapp.filter('titleCase', function() {
+   return function(input) {
+       var words = input.split(' ');
+       for (var i = 0; i < words.length; i++) {
+            words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+        }
+        return words.join(' ');
+    };
+});
+使用:{{sum|titleCase}}
+
+
+
+定义指令
+directive
+
+myapp.directive('ng-xx',sa).controller('my',function($scope){})
+function sa(){};
+
+app.directive('myDirective',function(){})
+对应的元素为<my-directive></my-directive>
+
+在HTML里使用my-directive声明指令，因此指令定义必须以myDirective为名字
+
+app.directive('myDirective', function() {
+return {
+restrict: String,	
+priority: Number,
+terminal: Boolean,
+template: String or Template Function:
+function(tElement, tAttrs) (...},
+templateUrl: String,
+replace: Boolean or String,
+scope: Boolean or Object,
+transclude: Boolean,
+controller: String or
+function(scope, element, attrs, transclude, otherInjectables) { ... },
+controllerAs: String,
+require: String,
+link: function(scope, iElement, iAttrs) { ... },
+compile: // 返回一个对象或连接函数，如下所示：
+function(tElement, tAttrs, transclude) {
+return {
+pre: function(scope, iElement, iAttrs, controller) { ... },
+post: function(scope, iElement, iAttrs, controller) { ... }
+}
+// 或者
+return function postLink(...) { ... }
+}
+};
+})
+
+//各个返回值讲解
+restrict	//表示指令以何种形式声明，可选值有:
+		//元素(E)、属性(A)、类(C)或注释(M)的格式
+terminal	//停止运行当前元素上比本指令优先级低的指令
+template	//表示指令附加的内容
+replace		//表示是否删除调用指令的元素
+scope		//有三个值true、false、{}
+		//为true时，指令创建一个新的作用域，继承父作用域
+		//为false时，指令作用域为父作用域
+		//为{}时，有三种数据绑定符合‘@’，‘=’，‘&’，见例子
+
+例子'@':将外部作用域赋值给指令
+myapp.directive('my',function(){
+  return {
+    restrict:'E',
+    scope:{
+      myS:'@'
+    },
+    template:'<a>{{myS}}</a>'
+  }
+})
+<my my-s="{{dd}}"></my>	//dd就是外部对象的属性
+
+例子'=':将指令与外部作用域变量双向绑定
+myapp.directive('my',function(){
+  return {
+    restrict:'E',
+    scope:{
+      myS:'='
+    },
+    template:'<a>{{myS}}</a>'
+  }
+})
+<my my-s="name"></my>	//name是父作用域的属性
+
+
+例子'&':使用外部作用域方法
+myapp.directive('my',function(){
+  return {
+    restrict:'E',
+    scope:{
+      myS:'&showName'
+    },
+    template:'<a ng-click="myS()">hello</a>'
+  }
+})
+<my show-name="showName()"></my>	//showName是外部作用域的方法
+
+
+controller:function($scope,$element)//$element表示指令对应的元素的集合
+
+表单验证
+<form name="myForm">
+  <input name="num" ng-model="number" type="number" required
+    ng-minlength="2" ng-maxlength="10">
+</form>
+
+以下的值为true表示未能通过验证
+myForm.num.$error.required  //表示是否填写了
+myForm.num.$error.number   //表示是否是数字
+myForm.num.$error.pattern  //表示是否符合正则表达式
+myForm.num.$error.minlength  //表示是否大于最小长度
+myForm.num.$error.maxlength  //表示是否小于最大长度
+
+
+myForm.$valid    //表示表单是否通过验证，是的时候为true
+myForm.$invalid   //与$valid相反
+
+myForm.$dirty 		//表示是否修改过表单，是的时候为true
+myForm.$pristime   /	/与$dirty相反
+
+路由
+
+app.config(function($routeProvider) {
+   $routeProvider
+      .when('/', {
+         templateUrl : 'home.html',
+         controller  : 'mainController'
+       })
+      .when('/about', {
+         templateUrl :'about.html',
+         controller  : 'aboutController'
+       })
+       .when('/contact', {
+         templateUrl : 'contact.html',
+         controller  : 'contactController'
+       });
+});
+when(path,route)
+
+route属性
+controller	//控制器
+template	//内容
+templateUrl	//内容地址
+resolve		//服务
+redirectTo	//改变路径
+
+<a ng-href="#/a"></a>	//表示跳转到路径为/a的路由上
+
+服务
+
+$interpolate服务
+
+$scope服务	//与指令元素相关联的当前作用域
+$element	//当前指令对应的元素
+$attrs		//由当前元素的属性组成的对象
+$transclude	//嵌入链接函数会与对应的嵌入作用域进行预绑定
+
+
+factory		//创建和配置服务的最快捷方式
+service		//注册一个支持构造函数的服务
+provider	//创建服务工厂
+
+
+service实例生成很复杂的时候使用factory() 
+
+var myapp=angular.module('myApp',[]);
+myapp.service('myservice',sb);
+myapp.controller('mycontroller',function($scope,myservice){
+	$scope.message=myservice.method()
+});
+function sb(){
+  this.method=function(){
+    return 'my';
+  }
+}
+
+$location服务
+
+$location.path()	//返回页面当前路径
+$location.path(path)	//匹配路由地址
+$location.replace()	//跳转后不能点击后退按钮
+$location.absUrl()	//获取编码后完整的url
+$location.hash()	//返回当前的hash片段
+$location.host()	//获取当前url的主机
+$location.port()	//获取当前url的端口号
+$location.protocol()	//获取当前url的协议
+$location.search()	//获取url中的查询串
+$location.url()		//获取当前页面的url
+
+例子:地址是http://localhost:63342/练习文件/angularJs练习.html#/home1
+
+$location.url()	//  返回/home1
+$location.absUrl()
+     //返回http://localhost:63342/练习文件/angularJs练习.html#/home1
+
+$location.url('/home1')	//设置路由地址
+
+$http服务		//类似于jquery的$.ajax()
+			//返回一个promise对象,具有success和error两个方法
+
+$http({url:a,method:'get',}).success(function(data){})
+
+也可以通过then方法处理
+$http({url:a,method:'get',}).then(function(resp){
+                              	   //resp是一个响应对象
+                                   },function(resp){
+					//带有错误信息的resp
+				     })
+
+$http post 传输数据
+$http.post(url,data,params).success(function(s){})
+
+params为
+{
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+  transformRequest:function(data){
+    return $.param(data);
+  }
+}
+
+
+

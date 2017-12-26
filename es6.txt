@@ -1,0 +1,20 @@
+let,const	//块
+
+
+箭头函数没有本身的this，this为定义域的this
+
+a=>d
+翻译为匿名函数
+function (a){return d;}
+
+function f(){
+	setTimeout(()=>{console.log(1);console.log(this);},3000);
+}
+翻译
+function f(){
+	var _this=this;
+	setTimeout(function(){console.log(1);console.log(_this);},3000);
+}
+
+
+

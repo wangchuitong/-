@@ -1,0 +1,197 @@
+﻿var m=document.getElementById('mycanvas');	//获取canvas元素
+var c=m.getContext('2d');		//获取绘画功能的对象
+
+c.fillStyle	//设置填充样式
+c.fill()	//填充
+
+c.strokeStyle	//设置边框样式
+c.stroke()	//绘制边框
+
+c.lineWidth	//设置边框宽度
+
+c.translate(x,y)//将坐标原点向x轴y轴平移
+
+c.scale(x,y)	//将坐标轴缩放，x轴按x比例缩放，y轴按y比例缩放
+
+c.rotate(angle)	//将坐标轴旋转angle角度
+
+*************************************************
+
+绘制矩形路径 rect(x,y,width,height)
+	//x，y表示矩形左上角的坐标
+	//width，height表示矩形的宽高
+
+填充矩形 fillRect(x,y,width,height)
+
+绘制矩形边框 strokeRect(x,y,width,height)
+
+清除矩形区域 clearRect(x,y,width,height)
+
+
+
+*************************************************
+
+绘制圆弧 arc(x,y,radius,starAngle,endAngle,anticlockwise)
+	//x，y表示圆心的坐标
+	//randius表示圆的半径
+	//starAngle，endAngle表示开始角度与结束角度(右为0，下为Math.PI/2)
+	//anticlockwise表示是否为逆时针
+
+*************************************************
+
+绘制直线 moveTo(x,y)	lineTo(x,y)
+	//起点		//连接点
+
+绘制贝塞尔曲线 bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y)
+		//cp1x,cp1y是第一个控制点的坐标
+		//cp2x,cp2y是第二个控制点的坐标
+		//x，y是终点的坐标
+
+绘制二次样条曲线 quadraticCurveTo(qcpx,qcpy,qx,qy)
+
+
+颜色的表示方式:
+
+直接用颜色名称:"red" "green" "blue"
+
+十六进制颜色值: "#EEEEFF"
+
+rgb(1-255,1-255,1-255)
+
+rgba(1-255,1-255,1-255,透明度
+
+/*******************************************新的学习***********************************************************/
+
+
+
+context.fill()//填充
+
+context.stroke()//绘制边框
+
+context.fillStyle//填充的样式，默认为black
+
+context.strokeStyle//边框样式，默认为black
+
+context.lineWidth//图形边框宽度
+
+context.rect(x,y,width,height)	//绘制矩形路径
+
+context.clearRect(x,y,width,height)	//清除矩形区域 
+
+context.arc(x, y, radius, starAngle,endAngle, anticlockwise)	//绘制圆形路径
+
+
+context.drawImage	//绘图
+
+context.createPattern(image,type)	//图像平铺
+					//type:no-repeat:不平铺、repeat-x:横方向平铺
+					       repeat-y:纵方向平铺、repeat:全方向平铺
+
+context.clip()	//图像裁剪
+
+var imagedata=context.getImageData(sx,sy,sw,sh)		//像素处理
+
+context.drawImage(image,x,y)	//image:Image对象var img=new Image(); img.src="url(...)";
+				//x:图片在画布中的x坐标
+				//y:图片在画布中的y坐标
+
+context.drawImage(image,x,y,w,h)	//image:Image对象var img=new Image(); img.src="url(...)";
+					//x:图片在画布中的x坐标
+					//y:图片在画布中的y坐标
+					//w:图片在画布中的宽度
+					//h:图片在画布中的高度
+
+context.drawImage(image,sx,sy,sw,sh,dx,dy,dw,dh)	//选取图像的一部分矩形区域进行绘制
+							//image:Image对象var img=new Image(); img.src="url(...)";
+							//sx：图像上的x坐标
+							//sy：图像上的y坐标
+							//sw：矩形区域的宽度
+							//sh：矩形区域的高度
+							//dx：图片在画布中的x坐标
+							//dy：图片在画布中的y坐标
+							//dw：图片在画布中的宽度
+							//dh：图片在画布中的高度
+
+
+//渐变
+
+				
+var d=c.createLinearGradient(0,0,100,100);		//d表示渐变颜色,线性渐变
+    d.addColorStop(0,'red');				//表示在0，0和100，100之间进行渐变
+    d.addColorStop(1,'#000');
+
+c.fillStyle=d;						//把渐变颜色给填充颜色
+
+
+var d=c.createRadialGradient(100,50,50,100,50,100);	//d表示渐变颜色,圆渐变
+    d.addColorStop(0,'red');				//前三参数表示开始圆的x,y,r
+    d.addColorStop(1,'#000');				//后三参数表示结束圆的x,yr
+							//两圆之间颜色渐变
+c.fillStyle=d;						//把渐变颜色给填充颜色
+
+
+画布缩放以及移动
+
+
+context.save()	//保存当前的坐标轴
+context.restore()//还原到之前保存的坐标轴，与save对应使用，仅使用一次
+
+c.translate(x,y)	//坐标轴向右移动x,向下移动y
+
+c.scale(.5,.5)		//坐标轴缩小一倍
+
+c.rotate(Math.PI/4);	//坐标轴顺时针旋转45度	//2PI == 360度
+
+
+图像重叠判断
+context.globalCompositeOperation=type
+
+type值有：		//新为新图形，原为原图形，交为新原图形的交集
+source-over(默认值)	//新+原，新覆盖原
+destination-over	//新+原，原覆盖新
+source-in		//交，颜色为新
+destination-in		//交，颜色为原
+source-out		//新中非交部分
+destination-out		//原中非交部分
+source-atop		//原+交，交颜色为新
+destination-atop	//新+交，交颜色为原
+lighter			//新+原，交颜色叠加
+xor			//新+原+非交
+copy			//新
+
+
+阴影绘制
+
+c.shadowOffsetX		//阴影的横向位移量
+c.shadowOffsetY		//阴影的纵向位移量
+c.shadowColor		//阴影的颜色
+c.shadowBlur		//阴影的模糊范围
+
+
+图像平铺
+
+c.fillStyle= c.createPattern(img,type);	//定义平铺背景
+
+type值有：
+repeat		//全方位平铺
+repeat-x 	//横向平铺
+repeat-y	//纵向平铺
+no-repeat 	//不平铺
+c.fillRect(0,0,400,400);
+
+
+图形裁剪
+
+c.clip();	//根据绘制的路径显示画布，之后绘制图形只能在该路径内才可显示
+
+图形复制
+
+var data=c.getImageData(0, 0, 400, 300);	//截取矩形图形
+c.putImageData(data,0,0)			//在指定位置画出截取的图形
+
+
+
+	
+
+
+

@@ -1,0 +1,96 @@
+jsp:
+
+<%! 声明的语句 %>		//声明语句，声明的变量为全局变量
+
+<% java代码 %>			//执行java代码
+
+<%= java表达式 %>		//输出表达式的值
+
+<%-- 注释 --%>			//注释
+
+******************************************************************
+
+page指令
+
+<%@ page 属性1="属性值1" 属性2="属性值2" %>
+
+属性有：
+
+language		//声明使用的脚本语言，目前只有java
+
+extends			//表示jsp生产的servlet继承于哪个父类
+
+import			//导入指定的java包
+
+session			//是否使用session对象
+
+buffer			//指定输出流是否具有缓冲区
+
+autoFlush		//缓冲区是否自动进行强制输出
+
+isThreadSafe		//是否支持多线程操作
+
+info			//设置jsp的相关信息
+
+errorPage		//当前页面发生错误时跳转的jsp页面
+
+isErrorPage		//是否能处理异常
+
+contentType		//指定mime格式以及网页编码格式
+			//contentType的charset是指服务器发送给客户端时的内容编码
+
+pageEncoding		//指定网页的编码格式
+			//pageEncoding是jsp文件本身的编码 
+
+isELlgnored		//是否忽略EL表达式
+
+***********************************************************************
+
+include指令		//通过file属性指定被包含文件的url
+
+*********************************************************************
+
+taglib指令		//声明使用
+
+*************************************************************
+
+jsp动作元素
+
+语法：<jsp:xxx />
+
+分类：
+第一类：存取JavaBean：<jsp:useBean />、<jsp:setProperty />、<jsp:getProperty />
+第二类：基本动作元素:<jsp:include/>、<jsp:forward/>、<jsp:param/>、<jsp:plugin/>、<jsp:params/>、<jsp:fallback/>
+第三类：jsp document：<jsp:root/>、<jsp:declaration/>、<jsp:scriptlet/>、<jsp:text/>、<jsp:output/>、<jsp:expression/>
+第四类：动态生产XML：<jsp:attribute/>、<jsp:body/>、<jsp:element/>
+第五类：用于Tag File：<jsp:invoke/>、<jsp:doBody/>
+	
+<jsp:include page="content.txt"/>	//包含页面
+
+<jsp:forward page="content.txt"/>	//服务器跳转页面
+	
+<jsp:param name="name" value="wang"/>	//传递参数
+
+****************************************************************
+
+jsp内置对象
+
+request
+
+response
+
+pageContext
+
+session
+
+application
+
+out
+
+config
+
+page
+
+exception
+
+			

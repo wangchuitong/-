@@ -1,0 +1,196 @@
+﻿JSX的基本语法规则：
+
+遇到HTML标签(以<开头),就用HTML规则解析
+遇到代码块(以{开头),就用JavaScript规则解析
+
+JSX语法
+
+<div id="div1" class="div2">hello world!</div>
+
+转换为js语法
+
+React.createElement('div',{id:'div1',className:'div2'},'hello world!')
+
+//将h1标签插入id是div1的元素中
+<script type="text/jsx">
+React.render(
+   <h1>hello,world!</h1>,
+   document.getElementById('div1')
+)
+</script>
+
+//插入变量
+var x=[<h1>hello,world!</h1>,<h2>react is awesome</h2>];
+React.render(
+  <div>{x.map(function(a){
+           return <div>hello{a}</div>
+        })}</div>,			//用{}表示执行javascript语句
+  document.getElementById('div1')
+)
+
+翻译为js
+
+var x=[
+	React.createElement('h1',null,'hello,world!'),
+	React.createElement('h2',null,'react is awesome')
+      ];
+React.render(
+	React.createElement('div',null,
+          x.map(function(a){
+	    return React.createElement('div',null,['hello',a])				  })
+        )
+)
+
+
+//添加组件
+var Nsd=React.createClass({	//首字母必须大写
+  render:function(){
+    return <h1>hello,{this.props.name}</h1>;
+  }
+})
+React.render(
+  <Nsd name="www"/>,	//显示为<h1>hello,www</h1>
+  document.getElementById('div1')
+)
+
+//this.props.children属性	//表示子节点
+
+var NotesList=React.createClass({   
+      render:function(){     
+        return  <ol>{
+                       this.props.children.map(function(child){
+                           return <li>{child}</li>;
+                        })
+                     }</ol>;   
+      } 
+    });
+    React.render(
+            <NotesList>		   //显示<ol>
+                <span>hello</span>  //      <li><span>hello</span></li>
+                <span>world</span>  //      <li><span>hello</span></li>
+            </NotesList>,	    //    </ol>
+            document.body
+    )	
+
+Mounting：已插入真实DOM  
+Updating：正在被重新渲染 
+ 
+
+Unmounting：已移出真实DOM
+
+
+will 函数在进入状态之前调用，did 函数在进入状态之后调用
+
+componentWillMount()	//插入真实dom之前调用	  
+componentDidMount() 
+ //插入真实dom之后调用
+componentWillUpdate(object nextProps, object nextState)
+	//被重新渲染前调用  
+componentDidUpdate(object prevProps, object prevState)
+	//被重新渲染后调用  
+componentWillUnmount()	//在移出真实dom之前调用
+
+
+
+
+state
+
+getInitialState //方法定义初始状态
+
+this.props	//组件的属性集合
+
+
+内联样式
+
+<div style={{background:'yellow'}}></div>	
+			//最外层的{}表示执行javascript语句
+			//内层的{}表示javascript对象字面量
+
+
+事件处理函数
+var O=React.createClass({
+getInitialState:function(){
+  return {value:'asd'};		//初始化state值
+},
+render:function(){
+  return  <input type="text" ref="txt" onChange={this.handle}/>;
+},
+
+handle:function(){}	//执行的函数
+
+})
+
+
+纯js写法
+
+var A=React.createClass({
+        displayName:'AC',
+        render:function(){
+            return React.createElement('div',{
+                className:'div1',
+                id:'div1'
+            },'ssd')
+        }
+    })
+    ReactDOM.render(
+            React.createElement(A,null),
+            document.getElementById('my')
+    )
+
+refs	//寻找dom元素
+
+this.refs.ss.refs.my	
+//表示先寻找ref属性为ss的子组件，如果为元素，则直接为真实DOM元素
+//再从该子组件中找到ref属性为my的元素
+
+this,refs.ss.getDOMNode()//获得ref属性为ss的子组件的DOM对象
+
+顶层API
+
+React.createClass(object)	//创建一个组件
+
+React.createElement(type,object,children)	//返回一个React元素
+
+React.render(ReactElement,DOMElement)	//把react元素插入到DOM元素中
+
+React.unmountComponentAtNode(DOMElement)	//从DOM中删除元素
+		/如果成功，返回 true；如果没有组件被移除，则返回 false
+
+
+组件API
+
+//通过this访问
+
+setState(object)	//合并新的state和当前state
+
+replaceState(object)	//删除已有的state，设置新的state
+
+forceUpdate(callback)	//如果props跟state之外的数据改变重新渲染
+
+getDOMNode()	//返回DOM元素
+
+isMounted()	//如果组件渲染到DOM中了，返回true
+
+setProps(object[,callback])	//改变组件属性，触发一次重新渲染
+
+replaceProps(object[,callback])	//删除已有的props，替换为新的
+
+
+React.createClass(object)	//创建一个组件
+
+
+object属性有：
+
+render	//渲染组件
+		//当检测到props和state发生改变时调用
+
+getDefaultState	//在组件创建时调用一次，返回值作为this.state的值
+
+getDefaultState	//在组件创建时调用一次，返回值缓存
+	//如果父组件没有指定props的某个键，返回值对应属性合并到this.props
+
+statics	//是个对象，可以定义组件的方法
+
+
+shouldComponentUpdate	//判断是否应该重新渲染，返回true则重新渲染
+			//有两个参数，分别是最新的props和最新的state

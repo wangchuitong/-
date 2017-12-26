@@ -1,0 +1,370 @@
+﻿cheerio			//服务器端的jquery		
+使用：
+var cheerio=require('cheerio');
+var $=cheerio.load(html);	//html为获取到的html字符串
+$('div').html(str);
+$.html()		//为改变的str
+
+
+iconv-lite		//转化gbk以及gb2312为utf8
+使用：
+var iconv=require('iconv-lite');        
+iconv.decode(buffer,'gbk');	//编码转化
+
+
+mysql		//连接mysql
+使用：
+var mysql=require('mysql');
+var mysqlOpt={
+    host: 'localhost',
+    user: 'root',
+    password: '123456',
+    database:'wang'
+};
+var database=mysql.createConnection(mysqlOpt);	//创建连接的表对象
+database.connect();
+database.query('select * from table',function(err,data){});执行sql语句
+database.end();
+
+
+formidable	//表单附件处理
+使用：
+var formidable=require('formidable');
+var form=new formidable.IncomingForm();
+
+form.encoding = 'utf-8' ;		//设置表单域的编码
+
+form.uploadDir	=  __dirname + '/temp'	//设置文件存放的路径
+
+form.keepExtensions = false;	//设置该属性为true可以使得上传的文件保持原来的文件的扩展名
+
+form.maxFieldsSize = 2 * 1024 * 1024;	//限制所有存储表单字段域的大小（除去file字段）
+
+form.maxFields = 1000 			//设置可以转换多少查询字符串，默认为1000
+
+form.hash = false; 			//设置上传文件的检验码，可以有两个取值'sha1' or 'md5'
+
+form.multiples = false; 		//开启该功能，当调用form.parse()方法时，回调函数的files						//参数将会是一个file数组，数组每一个成员是一个File对象						//，此功能需要 html5中multiple特性支持
+
+form.bytesReceived 			//返回服务器已经接收到当前表单数据多少字节
+
+form.bytesExpected 			//返回将要接收到当前表单所有数据的大小
+
+form.parse(req,function(err,fields,files){})//fileds为非file类型的集合对象
+					//files为file类型的集合对象
+					//都是键-值，键为输入框name名，值为对应的值
+
+file类型属性
+
+file.size = 0 			//上传文件的大小，如果文件正在上传，表示已上传部分的大小
+
+file.path = null 		//上传文件的路径。如果不想让formidable产生一个临时文件夹，可以				//在fileBegain事件中修改路径
+
+file.name = null 		//上传文件的名字
+
+file.type = null 		//上传文件的mime类型
+
+file.lastModifiedDate = null 	//时间对象，上传文件最近一次被修改的时间
+
+file.hash = null 		//返回文件的hash值
+
+可以使用JSON.stringify(file.toJSON())来格式化输出文件的信息
+
+form 事件 
+
+当有数据块被处理之后会触发该事件，对于创建进度条非常有用。
+form.on('progress', function(bytesReceived, bytesExpected) {}); 
+
+每当一个字段/值对已经收到时会触发该事件
+form.on('field', function(name, value) {});
+
+在post流中检测到任意一个新的文件便会触发该事件
+form.on('fileBegin', function(name, file) {});  
+
+每当有一对字段/文件已经接收到，便会触发该事件
+form.on('file', function(name, file) {}); 
+
+当上传流中出现错误便会触发该事件，当出现错误时，若想要继续触发request的data事件，则必须手动调用request.resume()方法
+form.on('error', function(err) {}); 
+
+当用户中止请求时会触发该事件，socket中的timeout和close事件也会触发该事件，当该事件触发之后，error事件也会触发
+form.on('aborted', function() {}); 
+
+当所有的请求已经接收到，并且所有的文件都已上传到服务器中，该事件会触发
+form.on('end', function() {}); 
+
+控制台打印结果实例：
+progress:received 65025,total 12088
+41
+field: name=ddd,value=asssssssss
+field: name=ddd3,value=dddddd
+fileBegin:name=file,file=[object Ob
+ject]
+progress:received 88288,total 12088
+41
+progress:received 111456,total 1208
+841
+progress:received 134624,total 1208
+841
+progress:received 157792,total 1208
+841
+progress:received 180960,total 1208
+841
+progress:received 204128,total 1208
+841
+progress:received 226800,total 1208
+841
+progress:received 249968,total 1208
+841
+progress:received 273136,total 1208
+841
+progress:received 296304,total 1208
+841
+progress:received 318976,total 1208
+841
+progress:received 342144,total 1208
+841
+progress:received 366168,total 1208
+841
+progress:received 389336,total 1208
+841
+progress:received 412504,total 1208
+841
+progress:received 435672,total 1208
+841
+progress:received 458840,total 1208
+841
+progress:received 482864,total 1208
+841
+progress:received 506032,total 1208
+841
+progress:received 530056,total 1208
+841
+progress:received 553224,total 1208
+841
+progress:received 576392,total 1208
+841
+progress:received 599560,total 1208
+841
+progress:received 622728,total 1208
+841
+progress:received 646752,total 1208
+841
+progress:received 669920,total 1208
+841
+progress:received 693088,total 1208
+841
+progress:received 716256,total 1208
+841
+progress:received 739424,total 1208
+841
+progress:received 764040,total 1208
+841
+progress:received 788656,total 1208
+841
+progress:received 811824,total 1208
+841
+progress:received 835944,total 1208
+841
+progress:received 859968,total 1208
+841
+progress:received 883136,total 1208
+841
+progress:received 906304,total 1208
+841
+progress:received 929472,total 1208
+841
+progress:received 933888,total 1208
+841
+progress:received 938232,total 1208
+841
+progress:received 961856,total 1208
+841
+fileBegin:name=file2,file=[object O
+bject]
+file:name=file,file=[object Object]
+
+progress:received 985024,total 1208
+841
+progress:received 1008192,total 120
+8841
+progress:received 1032312,total 120
+8841
+progress:received 1056336,total 120
+8841
+progress:received 1079504,total 120
+8841
+progress:received 1103528,total 120
+8841
+progress:received 1126696,total 120
+8841
+progress:received 1149864,total 120
+8841
+progress:received 1173032,total 120
+8841
+progress:received 1196200,total 120
+8841
+progress:received 1208841,total 120
+8841
+file:name=file2,file=[object Object
+]
+1
+{ ddd: 'asssssssss', ddd3: 'dddddd'
+ }
+2
+{ file:
+   File {
+     domain: null,
+     _events: {},
+     _eventsCount: 0,
+     _maxListeners: undefined,
+     size: 938893,
+     path: 'D:\\TOMCAT\\apache-tomc
+at-7.0.69\\webapps\\workspace\\test
+\\node\\test\\temp\\upload_f47b4a27
+35e7b98d534d181fc226ac64',
+     name: '???????.png',
+     type: 'image/png',
+     hash: null,
+     lastModifiedDate: 2017-01-20T0
+0:59:26.062Z,
+     _writeStream:
+      WriteStream {
+        _writableState: [Object],
+        writable: false,
+        domain: null,
+        _events: {},
+        _eventsCount: 0,
+        _maxListeners: undefined,
+        path: 'D:\\TOMCAT\\apache-t
+omcat-7.0.69\\webapps\\workspace\\t
+est\\node\\test\\temp\\upload_f47b4
+a2735e7b98d534d181fc226ac64',
+        fd: null,
+        flags: 'w',
+        mode: 438,
+        start: undefined,
+        autoClose: true,
+        pos: undefined,
+        bytesWritten: 938893,
+        closed: true } },
+  file2:
+   File {
+     domain: null,
+     _events: {},
+     _eventsCount: 0,
+     _maxListeners: undefined,
+     size: 269406,
+     path: 'D:\\TOMCAT\\apache-tomc
+at-7.0.69\\webapps\\workspace\\test
+\\node\\test\\temp\\upload_fea66b95
+7f49b16ff8b1092038206507',
+     name: '????.jpg',
+     type: 'image/jpeg',
+     hash: null,
+     lastModifiedDate: 2017-01-20T0
+0:59:26.071Z,
+     _writeStream:
+      WriteStream {
+        _writableState: [Object],
+        writable: false,
+        domain: null,
+        _events: {},
+        _eventsCount: 0,
+        _maxListeners: undefined,
+        path: 'D:\\TOMCAT\\apache-t
+omcat-7.0.69\\webapps\\workspace\\t
+est\\node\\test\\temp\\upload_fea66
+b957f49b16ff8b1092038206507',
+        fd: null,
+        flags: 'w',
+        mode: 438,
+        start: undefined,
+        autoClose: true,
+        pos: undefined,
+        bytesWritten: 269406,
+        closed: true } } }
+end
+
+
+
+
+ejs		//js模版页面
+使用：
+var ejs=require('ejs');
+ejs.render('<div><%=title%></div>',{title:'dd'});//<div>dd</div>
+
+
+//视频处理插件
+fluent-ffmpeg
+
+var ffmpeg = require('fluent-ffmpeg');
+var command = ffmpeg(opt);
+
+opt选项可用：
+	source:视频路径
+	timeout:超时时间
+	preset或者presets：目录来加载模块预设（默认为lib/presetsfluent-ffmpeg树中的目录）
+	niceness或priority：ffmpeg的好感值，介于-20和20之间; 在Windows平台上被忽略（默认为0）
+	logger：与记录器对象debug()，info()，warn()和error()方法（默认为不记录）
+	stdoutLines：从ffmpeg stdout / stderr到内存中的最大行数（默认为100，无限制存储使用0
+
+command对象的方法
+
+input(url)	//添加文件
+
+fps(num)	//设置fps
+
+native()	//以本机帧率读取
+
+setStartTime(time)	//设置开始时间
+
+noAudio()	//禁用音频
+
+audioCodec(codec)	//设置音频解码器
+
+audioBitrate(bit)	//设置音频比特率
+
+audioChannels(count)	//设置音频通道数
+
+audioFrequency(num)	//设置音频频率
+
+noVideo()	//禁用视频
+
+videoCodec(codec)	//设置视频解码器
+
+videoBitrate(bit)	//设置视频比特率
+
+frames(count)		//设置可编码的最大帧数
+
+size(size)	//设置分辨率大小，值有：640x480，640x?，?x480，50%
+
+aspect(aspect)	//设置输出帧长宽比，值有：4:3，1.33333
+
+output(url)	//添加一个输出
+
+ffmpeg ('/ path/to/file1.avi '）	//获取视频信息
+  .input （'/ path/to/file2.avi '）
+  .ffprobe （0 ，function （err ，data ） { //0表示第一个数据，默认表示最后一个  
+    console.log(' file1 metadata：');
+    console.log（data）;
+  } ） ;
+
+
+加密模块
+crypto
+
+var sha1 = crypto.createHash('sha1');
+sha1.update('foo');		//字符串相加
+sha1.update('bar');
+sha1.digest('hex');		//输出加密后的字符串
+
+
+调试模块
+node-inspector
+
+执行
+两个命令窗口
+
+1、node-inspector
+2、node-debug enter.js

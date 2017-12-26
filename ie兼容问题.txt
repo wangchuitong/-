@@ -1,0 +1,124 @@
+﻿background:url('../')center no-repeat;
+背景图片无法显示，改成：
+background:url('../') center no-repeat;	//仅仅多一个空格就行
+
+
+&nbsp;空格	//4个相当于1个汉字，而360两个相当于一个汉字
+
+ie8去iframe边框	//frameborder="no"
+
+<!--[if lt IE 9]>	//小于ie9加载的html
+加载CSS1(可以把要重写的写在这里).
+<![endif]-->
+<!--[if lte IE 9]>	//小于等于ie9加载的html
+加载CSS1(可以把要重写的写在这里).
+<![endif]-->
+<!--[if gte IE 9]>	//大于等于ie9加载的html
+加载CSS1(可以把要重写的写在这里).
+<![endif]-->
+
+针对ie7 ie8 的css样式hack
+
+ie7:*line-height:23px;		//*
+
+ie8:line-height:26px\9;		//'\9'
+
+ie8 line-height要比height高2px才能居中
+
+//针对ie11的css样式hack
+@media screen and(-ms-high-contrast:active),(-ms-high-contrast:none) {
+            .box{
+                line-height: 32px;
+            }
+        }
+
+//针对ie8的css样式hack
+@media \0screen {   .selector {  property: value; } }
+
+//针对谷歌
+@media screen and (-webkit-min-device-pixel-ratio:0){}
+
+
+filter隐藏表格边框使用position:relative;z-index=-1;
+
+父子元素之间的margin-top会让父元素下移		//解决:为父元素添加overflow：hidden
+
+
+
+window.top.document.compatMode		//判断浏览器使用标准还是杂项
+					//BackCompat  表示怪异模式
+					//CSS1Compat  表示标准模式
+
+css前缀:
+
+-ms-		//ie9以上
+-webkit-	//Safari and Chrome
+-moz-		//Firefox
+
+
+
+::-ms-clear,				//去掉ie10以上input默认叉叉
+::-ms-reveal{				//去掉ie10以上input密码默认眼睛图标
+    display: none;
+}
+
+
+
+/************************************ie8兼容性**********************************************/
+
+ie8 iframe中的输入框无法获取焦点问题
+
+原因：也就是关闭弹窗的时候 简单的移除了弹窗，没有对iframe进行清理，这样内存里面相当于还有一份iframe的实例
+
+解决：移除的时候删除内容 iframe.contentWindow.document.write('');
+
+
+max-width:	IE解析max-width所遵循的规则：严格要求直接父元素的宽度是固定的
+
+
+-o-		//Opera
+
+
+/*给ie8加上indexOf方法*/
+
+if(!Array.prototype.indexOf){
+        Array.prototype.indexOf=function(item){
+            for(var i=0;i<this.length;i++){
+                if(this[i]==item){
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }
+
+
+
+/********************************************************************************************/
+
+filter:
+  progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,src=url,sizingMethod=scale)
+//enabled 表示是否启用滤镜，默认为true
+//sizingMethod表示图片显示方式，值有：
+				//crop：剪切图片适应对象大小
+				//image（默认值）：增大或缩小对象大小以使用图片大小
+				//scale：缩放图片以使用对象的尺寸边界
+//src表示图片路径，url为绝对地址
+
+/*********图片预览***********/
+if(window.FileReader){
+            var read=new FileReader();
+            read.onload=function(result){
+                var target=result.target||result.srcElement;
+                url=target.result;
+                box.style.backgroundImage='url('+url+')';
+            };
+            read.readAsDataURL(this.files[0]);
+        }else{
+            this.select();
+            document.body.focus();
+            url = document.selection.createRange().text;
+            box.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+            box.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = url;
+        }
+

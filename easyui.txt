@@ -1,0 +1,1035 @@
+API：
+
+基本：语法分析、简单载入器、一般拖动、拖动至容器、缩放、分页、搜索框、进度条
+
+布局管理器：控制面板、选项卡、可伸缩面板、布局面板
+
+菜单和按钮：菜单、链接按钮、菜单按钮、分隔按钮
+
+表单：表单、表单验证、自定义组合框、组合树、组合表格、数字验证框
+
+窗口：窗口、对话窗口、消息窗口
+
+
+
+API解析：
+
+语法解析[Parser]
+$.parser.parse()	//解析所有页面
+$.parser.parse('#cc')	//解析指定页面
+
+简单载入器[Easyloader]
+easyloader.base = '../';    // 设置easyui根目录
+easyloader.load('messager', function(){        // 载入特定模块
+    $.messager.alert('Title', 'load ok');
+});
+
+一般拖动[draggable]
+$('#dd').draggable({
+    	handle:'#title',	//可以按住title元素拖动目标
+	proxy:'clone'		//为clone时复制该元素代替，为函数时返回jquery对象代替
+	revert:true		//如果为true，拖动结束时返回初始位置
+	cursor:'pointer'	//css代码，表示拖动时的指针
+	disabled:true		//为true时停止拖动
+	edge:4			//可以在其中拖动的容器的宽度
+	axis:'h'		//可用值为'v'或者'h',当设置为空时，元素可以同时在水平和垂直方法拖动
+	onBeforeDrag:function(e){}//在拖动之前触发，返回false取消拖动
+	onStartDrag:function(e){}//在开始拖动时触发
+	onDrag:function(e){}	//拖动时触发
+	onStopDrag:function(e){}	//当拖动停止时触发
+});
+$('#dd').draggable('options')	//返回上面的参数对象
+$('#dd').draggable('proxy')	//返回被用于拖动的替代对象
+$('#dd').draggable('enable')	//允许拖动
+$('#dd').draggable('disable')	//禁止拖动
+
+拖动至容器[droppable]
+$('#dd').droppable({
+    	accept:'#d1,#d3'		//表示哪个可拖动元素会被接收
+	onDragEnter:function(e,s){}	//当可拖动元素进入容器内时触发,s表示被拖动元素
+	onDragOver:function(e,s){}	//当可拖动元素被拖至某个元素之上的时候触发
+	onDragLeave:function(e,s){}	//当可拖动元素被拖离目标容器的时候触发
+	onDrop:function(e,s){}		//当可拖动元素被放置在容器时触发
+});
+
+缩放[resizable]
+$('#dd').resizable({
+	disabled:true		//为true时禁止缩放
+	handles:'s'		//s向下缩放，e向左缩放，all表示随意缩放	
+	minWidth:10		//最小宽度	
+	minHeight:10		//最小高度
+	maxWidth:10		//最大宽度
+	maxHeight:10		//最大宽度
+	onStartResize:function(e){}//当开始缩放时触发
+	onResize:function(e){}//在缩放过程中触发，当返回false时, DOM元素将不再缩放
+	onStopResize:function(e){}//当缩放停止是触发	
+})
+
+分页[pagination]
+<div id="pp" style="background:#efefef;border:1px solid #ccc;"></div> 
+$('#pp').pagination({
+	totle:21	//总记录数
+	pageSize:2	//每页记录数
+	pageNumber:1	//当前页码
+	pageList:[10,20]//改变每页显示的记录数,10或20
+	loading:false	//定义数据是否在载入
+	buttons:[]	//定义按钮，每个按钮包含两个属性：iconcls,handler
+	showPageList:true//是否选择每页记录数
+	showRefresh:true//是否显示刷新按钮
+	beforePageText:'sad'//在输入框之前显示的字符
+	afterPageText:'sad'//在输入框之后显示的字符
+	displayMsg:'asd'//在插件右上方显示分页信息
+	onSelectPage:function(pageNumber,pageSize){}//当用户进行翻页时触发
+							刷新也会触发
+						pageNumber： 下一页的页码
+						pageSize： 下一页的显示记录数
+	onBeforeRefresh:function(pageNumber,pageSize){}//刷新之前触发, 返回false							将取消刷新
+	onRefresh:function(pageNumberpageSize){}//刷新之后触发
+	onChangePageSize:function(pageSize){}//当用户修改每页显示记录数时触发
+})
+
+$('#pp').pagination('options')	//返回上面的参数对象
+$('#pp').pagination('loading')	//表示分页正在加载
+$('#pp').pagination('loaded')	//表示分页加载完成
+
+搜索框[searchbox]
+<input id="ss"></input>
+<div id="mm" style="width:120px">
+    <div name="all" iconCls="icon-ok">All News</div>
+    <div name="sports">Sports News</div>
+</div>
+$('#ss').searchbox({
+    	width:200,			//表示组件的宽度
+    	searcher:function(value,name){//当用户点击搜索按钮被调用
+        	alert(value + "," + name)
+    	},
+    	menu:'#mm',			//搜索类型的下拉菜单
+    	prompt:'Please Input Value'	//搜索框的默认值
+	propmt:'sd'			//显示搜索框的提醒消息 
+});
+$('#ss').searchbox('options')		//返回参数对象
+$('#ss').searchbox('menu')		//返回搜索类型的下拉菜单对象
+$('#ss').searchbox('textbox')		//返回文本框对象
+$('#ss').searchbox('getValue')		//返回当前搜索值
+$('#ss').searchbox('setValue','ssa')	//设置当前搜索值
+$('#ss').searchbox('getName')		//返回当前搜索类型
+$('#ss').searchbox('destory')		//清楚搜索框组件
+
+进度条[progressbar]
+$('#p').progressbar({
+	width:'400px'			//进度条宽度
+	value:40			//当前进度，百分比数值
+	text:'50%'			//显示在中间的文本
+	onChange:function(newV,oldV)	//进度条发生改变时触发，参数为新值，旧值
+});
+$('#p').progressbar('options'）		//返回参数对象
+$('#p').progressbar('resize')		//重置进度条
+$('#p').progressbar('getValue')		//返回当前进度值
+
+控制面板[Panel]
+<div id="p" style="padding:10px;">
+    <p>panel content.</p>
+    <p>panel content.</p>
+</div>
+$('#p').panel({
+  	width:500,			//面板宽度
+  	height:150,			//面板高度
+  	title: 'My Panel',		//显示在顶部的标题文本
+	iconCls:'icon-add'		//标题前显示一个图标
+  	tools: [{			//面板的工具按钮组
+    	  iconCls:'icon-add',		//按钮的图标
+    	  handler:function(){alert('new')}	//点击按钮的事件函数
+  	},{
+    	  iconCls:'icon-save',
+    	  handler:function(){alert('save')}
+  	}],
+	style:{backgroundColor:red}	//面板的style属性
+
+	cls:'sd'			//给面板加一个class
+	headerCls:'header'		//给面板头部加一个class
+	bodyCls:'sd'			//给面板主体加一个class
+	content:'sdas'			//面板主体的内容
+
+	fit：true			//是否铺满浏览器
+	collapsible:true		//是否显示可折叠按钮
+	noheader:true			//是否创建面板头部
+	border:true			//是否显示面板边框
+	minimizable:true		//是否显示最小化按钮
+	maximizable:true		//是否显示最大化按钮
+	closable:true			//是否显示关闭按钮
+
+	href:url			//载入数据的地址
+
+	onLoad:function(){}		//事件载入时触发
+	onBeforOpen:function(){}	//打开前触发，返回false取消
+	onOpen				//打开后触发
+	onBeforeClose			//关闭之前触发
+	onClose				//关闭之后触发
+	onBeforeDestroy			//注销前触发
+	onDestroy			//注销后触发
+	onCollapse			//折叠之后触发
+	onBeforeExpend			//扩展之前触发，返回false取消，指宽高
+	onExpend			//扩展之后触发
+	onResize			//被缩放时触发，参数width,height,新的宽高
+	onMove				//移动后触发,参数left,top,新的位置
+	onMaximize			//最大化时触发
+	onMinimize			//最小化时触发
+	onRestore			//重置为初始大小时触发
+});
+
+$('#p').panel('optins')		//返回参数对象
+$('#p').panel('panel')		//返回面板对象
+$('#p').panel('header')		//返回面板头部对象
+$('#p').panel('body')		//返回面板主体对象
+$('#p').panel('setTitle','sa')	//设置面板头部标题文本
+$('#p').panel('open',forceOpen)	//参数为true时，不受onBeforeOpen函数约束
+$('#p').panel('close',forceOpen)	
+$('#p').panel('destroy',forceDestroy)	
+$('#p').panel('refresh',url)	//刷新面板载入数据
+$('#p').panel('resize',options)	//重新布局
+$('#p').panel('move',options)	//移动面板到新的位置,left,top
+$('#p').panel('maximize')	//使面板铺满整个容器
+$('#p').panel('minimize')	//最小化面板
+$('#p').panel('restore')	//初始化面板
+$('#p').panel('collapse')	//折叠面板
+$('#p').panel('expand')		//扩展面板
+
+选项卡[Tabs]
+<div id="tt" class="easyui-tabs" style="width:500px;height:250px;">
+    <div title="Tab1">
+        tab1
+    </div>
+    <div title="Tab2" closable="true">
+        tab2
+    </div>
+    <div title="Tab3" closable="true">
+        tab3
+    </div>
+</div>
+$('#tt').tabs({
+	width:21			//容器的宽度
+	height:21			//容器的宽度
+
+	border:false,			//是否显示边框
+	plain:true			//是否显示选项卡背景
+	fit:true			//是否铺满浏览器
+
+	scrollIncrement:200		//选项卡滚动条每次滚动的像素值
+	scrollDuration:3000		//每次滚动持续的时间，单位为毫秒
+
+	tools:[]			//选项卡右上角工具栏
+
+	onSelect:function(title){	//选择选项卡时触发
+		alert(title+' is selected');
+	}
+	onLoad		panel		//当一个选项卡完成ajax远程载入对象时触发。
+	onSelect	title		//当用户选择一个选项卡时触发。
+	onBeforeClose	title		//在一个选项卡被关闭之前触发，返回false将取消关闭。
+	onClose		title		//在用户关闭一个选项卡面板后触发。
+	onAdd		title		//在一个选项卡面板被添加后触发。
+	onContextMenu			//在一个选项卡面板被鼠标右键单击后触发
+});
+方法
+	onUpdate	title		//在一个选项卡面板被更新后触发。
+	enableTab	which		//启用一个特定的 tab panel，'which' 参数可以是tab panel的title或者是index
+	options		none		//返回选项卡属性对象。
+	tabs		none		//返回所有的选项卡面板。
+	resize		none		//重置选项卡容器（控制面板）大小并且自动布局。
+	add		options		//添加一个新的选项卡面板，options参数是面板对象
+	close		title		//关闭一个选项卡面板，title参数表示哪个选项卡将被关闭。
+	getTab		title		//获取特定的选项卡面板名称。
+	getSelected	none		//获取被选择的选项卡面板名称。
+	select		title		//选择一个选项卡面板。
+	exists		title		//验证一个特定的选项卡面板是否存在。
+	update		param		//更新特定的选项卡面板，param参数包含2个属性:
+							tab: 将被更新的选项卡。
+							options: 选项卡相关配置项。
+
+add添加的选项卡属性面板有：
+	title					//选项卡面板的标题。	 
+	content					//选项卡面板的内容。	
+	href					//从超链接载入远程内容到选项卡 面板
+	cache					//设置为true将缓存选项卡面板，当href（超链接）属性被设置时有效
+	iconCls					//一个显示选项卡面板标题图标的CSS类
+	width					//选项卡面板的宽度
+	height					//选项卡面板的高度
+	closable				//当这是为true时，选项卡面板将会显示一个关闭按钮
+	selected				//当设置为true时，将会默认显示该选项卡下的内容
+
+可伸缩面板[accordion]
+$('#tt').accordion({
+	width:11				//可伸缩面板所在容器的宽度
+	height:22				//可伸缩面板所在容器的高度
+	fit:false				//如果设置为true，可伸缩面板所在容器将铺满它所在的父容器
+	border:true				//是否显示边框
+	animate:true				//定义当延伸或者折叠面板时是否显示动画效果
+
+	onSelect	title			//当一个可伸缩面板被选择时触发。
+	onAdd		title			//在一个新面板被添加时触发。
+	onBeforeRemove	title			//在可伸缩面板被移除之前触发，返回false将取消移除。
+	onRemove	title			//在一个可伸缩面板被移除时触发
+})
+方法
+	options		none			//返回容器属性对象。
+	panels		none			//获取所有的面板。
+	resize		none			//重置可伸缩面板。
+	getSelected	none			//获取被选择的面板。
+	getPanel	title			//获取特定的可伸缩面板。
+	getPanelIndex	panel			//得到特定的panel的下标。
+				下面的示例代码展示如何得到一个选中的panel的下标(index)。
+						var p = $('#aa').accordion('getSelected');
+						if (p){
+							var index = $('#aa').accordion('getPanelIndex', p);
+							alert(index);
+						}
+	select		title			//选择特定的面板。
+	add		options			//添加一个先的可伸缩面板。
+	remove		title			//移除特定的面板
+
+布局面板[layout]
+$('#cc').layout()
+
+子元素属性
+	title		string		//布局面板的标题。	null
+	region		string		//可以取下列值的其中之一：north, south, east, west, center。	 
+	border		boolean		//设置为true将显示布局面板的边框。	true
+	split		boolean		//如果设置为true将显示一个分隔条，用户可以拖动分隔条来改变布局面板的尺寸
+	iconCls		string		//一个用来显示布局面板头部图标的css类。	null
+	href		string		//一个用来从远程站点载入数据的超链接
+
+
+方法
+	resize		none		//设置布局面板的尺寸大小。
+	panel		region		//返回特定的布局面板，'region'参数的可取值为：
+							'north','south','east','west','center'。
+	collapse	region		//折叠特定的布局面板，'region'参数的可取值为：'north','south','east','west'
+	expand		region		//延伸特定的布局面板，'region'参数的可取值为：'north','south','east','west'
+
+
+菜单[menu]
+事件
+	onShow		none		当一个菜单被显示后触发。
+	onHide		none		在一个菜单被隐藏后触发。
+	onClick		item		当一个菜单被点击时触发。
+方法
+	show		pos		在一个特定的位置显示菜单。pos参数有2个属性：left：新的左边距。top：新的顶边距。
+	hide		none		隐藏一个菜单。
+	getItem		itemEl		获取菜单项数据并将其返回, 数据包含以下属性：
+								target：DOM对象，菜单项目。
+								id：字符串，分配给元素的ID。
+									text：字符串，菜单项的文本。
+								href：字符串，超链接地址。
+								disabled：布尔型，菜单项是启用还是禁用。
+								onclick：函数, 当用户点击菜单时将要执行的函数。
+								iconCls：字符串，图标css类。
+	setText		param		设置特定的菜单文本，'param'参数包含2个属性：
+							target：DOM对象，将要被设置的菜单项。
+							text：字符串，新的文本值。
+	setIcon		param		设置特定的菜单项图标，'param'参数包含2个属性：
+							target：DOM对象，菜单项目。
+							iconCls: 新的图标css类。
+	findItem	text		查找特定的菜单项，和getItem方法返回的对象相同。
+	appendItem	param		添加菜单，'param'参数包含以下属性：
+					parent: 待添加新菜单的DOM对象，如果没有被设置，新菜单项将会被作为顶级菜单添加。
+					text：字符串，菜单项文本。
+					href：字符串，超链接地址。
+					onclick：字符串或者函数，当用户点击菜单项时将要被执行的脚本代码或者函数。
+					iconCls: string, the icon class.
+	removeItem	itemEl		移除特定的菜单项。
+	enableItem	itemEl		启用菜单项。
+	disableItem	itemEl		禁用菜单项。
+
+链接按钮[Linkbutton]
+<a href="#" id="btn" iconCls="icon-search">easyui</a>
+$('#btn').linkbutton({
+	id（ID）	string		分配给该组件的ID。	null
+	disabled	boolean		设置为true将禁用按钮。	false
+	plain		boolean		设置为true将显示简洁效果。	false
+	text		string		显示在按钮上的文本。	''
+	iconCls		string		用来在左边显示一个16x16大小图标的css类。	null
+})
+方法
+	options		none		返回属性对象。
+	disable		none		禁用按钮。
+	enable		none		启用按钮。
+
+菜单按钮[menubutton]
+<a href="javascript:void(0)" id="mb" iconCls="icon-edit">Edit</a>
+<div id="mm" style="width:150px;">
+    <div iconCls="icon-undo">Undo</div>
+    <div iconCls="icon-redo">Redo</div>
+    <div class="menu-sep"></div>
+    <div>Cut</div>
+    <div>Copy</div>
+    <div>Paste</div>
+    <div class="menu-sep"></div>
+    <div iconCls="icon-remove">Delete</div>
+    <div>Select All</div>
+</div>
+
+$('#mb').menubutton({
+    menu: '#mm'
+});
+
+
+表单[Form]
+<form id="ff" method="post">
+    ...
+</form>
+属性
+	url 		string		//表单提交的地址
+事件
+	onSubmit	none		//在表单提交之前触发，返回false将阻止表单提交。
+	success		data		//当表单成功提交时触发。
+	onBeforeLoad	param		//在发送载入远程数据请求之前触发，返回false将取消请求。
+	onLoadSuccess	data		//在表单数据被载入时触发。
+	onLoadError	none		//在载入表单数据发生错误时触发。
+方法
+	submit		options		执行表单提交，options参数是一个包含以下属性的对象：
+							url：表单提交的目标网址
+							onSubmit：在表单提交之前执行的回调函数
+							success: 在表单成功提交后执行的回调函数
+	load		data		载入记录填充表单。
+	clear		none		清除表单数据
+	validate	none		执行表单域验证，如果全部表单域有效返回true，该方法与表单验证插件一起使用。
+
+表单验证[validatebox]
+<input id="cc" value="001">
+<select id="cc"></select >
+$('#cc').combo({
+    required:true,
+    multiple:true
+});
+
+可装载组合框[combobox]
+$('#cc').combobox({
+//自定义组合框属性
+	width:100		组合框的宽度
+	panelWidth:100		下拉框的宽度
+	panelHeight:100		下拉框的高度					200
+	multiple:true		定义是否支持多选				false
+	separator:'.'		当支持多选时，用以分隔文本的字符		,
+	editable:true		定义用户是否可以直接向组合框输入内容		true
+	disabled:true		定义是否禁用输入框				false
+	hasDownArrow:true	定义是否显示下拉按钮				true
+	value:'sasd'		默认值	
+	delay:200		最后一次输入事件与搜索（自动完成）之间的延迟间隔	200
+	keyHandler（按键助手）	object（对象）
+//独有属性
+	valueField:'id'		绑定到组合框下的数据的值域的名称		value
+	textField:'text'	绑定到组合框下数据的文本域的名称。		text
+	mode:'remote'	定义当文本发生改变时，如何载入数据列表。如果组合框要从远程地址载入数据，设置为'remote'	local
+	url:'a.json'		可供载入数据列表的远程地址。	null
+	method:'post'		获取数据的HTTP方法。	post
+	data:[]			将被载入的数据列表。	null
+	filter:function(q,row){}定义当模式设置为'local'时如何过滤本地数据，function有2个参数：
+									q: 用户输入的文本。
+									row: 数据列表
+									返回true将允许显示数据列表。	
+	formatter:function(row){}定义如何返回数据，function有一个参数：row
+//事件
+	onShowPanel:function(){}	当显示下拉面板的时候触发。
+	onHidePanel:function(){}	当隐藏下拉面板的时候触发。
+	onChange:function(nv.ov){}	当组合框的值发生改变时触发。
+
+	onLoadSuccess:function(){}	当远程数据载入成功时触发。
+	onLoadError:function(){}	当远程数据载入错误时触发。
+	onSelect:function(re){}		当用户选择一个列表项时触发。
+	onUnselect:function(re){}	当用户取消选择一个列表项时触发。
+})
+方法：
+	options		none		返回属性对象。
+	panel		none		返回下拉面板对象。
+	textbox		none		返回文本框对象。
+	destroy		none		销毁组件。
+	resize		width		调整组件的宽度。
+	showPanel	none		显示下拉面板。
+	hidePanel	none		隐藏下拉面板。
+	disable		none		禁用组合框。
+	enable		none		启用组合框。
+	validate	none		验证输入的值。
+	isValid		none		返回验证结果。
+	clear		none		清除组件的值。
+	getText		none		获取组合框的值。
+	setText		text		设置组合框的值。
+	getValues	none		返回一个存储下拉面板值的数组。
+	setValues	values		设置下拉面板的值，参数values是一个数组。
+	getValue	none		获取下拉面板的值。
+	setValue	value		设置下拉面板的值。
+
+	getData		none		返回已载入的数据。
+	loadData	data		载入本地数据列表。
+	reload		url		请求远程数据列表。
+	select		value		选择特定的项目。
+	unselect	value		取消选择特定的项目。
+
+数据表格[datagrid]
+属性
+	columns（列）	array（数组）	数据表格列配置对象，查看列属性以获取更多细节。	null
+	frozenColumns（固定列）	array（数组）	跟列属性一样，但是这些列固定在左边，不会滚动。	null
+	fitColumns（自适应列宽）boolean（布尔型）	设置为true将自动使列适应表格宽度以防止出现水平滚动。	false
+	striped（显示条纹）	boolean（布尔型）	设置为true将交替显示行背景。	false
+	method（方法）	string（字符串）	请求远程数据的方法类型。	post
+	nowrap（截取）	boolean（布尔型）	设置为true，当数据长度超出列宽时将会自动截取。	true
+	idField（id字段）	string（字符串）	表明该列是一个唯一列。	null
+	url（超链接）	string（字符串）	一个用以从远程站点请求数据的超链接地址。	null
+	loadMsg（载入时信息）	string（字符串）当从远程站点载入数据时，显示的一条快捷信息。	Processing, please wait 
+	pagination（分页）	boolean（布尔型）	设置true将在数据表格底部显示分页工具栏。	false
+	rownumbers（行数）	boolean（布尔型）	设置为true将显示行数。	false
+	singleSelect（单选模式）	boolean（布尔型）	设置为true将只允许选择一行。	false
+	checkOnSelect	boolean（布尔型）	如果设置为 true，当用户点击一行的时候 checkbox checked(选择)/unchecked(		取消选择)。 如果为false，当用户点击刚好在checkbox的时候，checkbox checked(选择)/unchecked(取消选择)。这		个属性从1.3版本以后可用。	true
+	selectOnCheck	boolean（布尔型）	如果设置为true，点击checkbox将永远选择这行。如果设置为false，选择一个行		将不会选择checkbox。这个属性从1.3版本以后可用。	true
+	pagePosition	string（文本型）	定义分页工具栏的位置.可用值有： 'top'，'bottom'，'both'。这个属性从1.3		版本以后可用。	bottom
+	checkOnSelect	boolean（布尔型）	如果设置为true，点击checkbox将永远选择这行。如果设置为false，选择一个行		将不会选择checkbox。这个属性从1.3版本以后可用。	false
+	pageNumber（当前页码）	number（数字）	当设置分页属性时，初始化分页码。	1
+	pageSize（每页记录数）	number（数字）	当设置分页属性时，初始化每页记录数。	10
+	pageList（可选择的每页记录数）	array	当设置分页属性时，初始化每页记录数列表。	[10,20,30,40,50]
+	queryParams（查询参数）	object（对象）	当请求远程数据时，发送的额外参数。	{}
+	sortName（默认排序）	string（字符串）	当数据表格初始化时以哪一列来排序。	null
+	sortOrder（排序顺序）	string（字符串）	定义排序顺序，可以是'asc'或者'desc'（正序或者倒序）。	asc
+	remoteSort（远程排序）	boolean（布尔型）	定义是否通过远程服务器对数据排序。	true
+	showFooter（显示行底）	boolean（布尔型）	定义是否显示行底（如果是做统计表格，这里可以显示总计等）。			false
+	rowStyler（行样式）	function（函数）	返回样式，如：'background:red'，function有2个参数：
+	index：行索引，从0开始.
+	row：对应于该行记录的对象。	
+	loadFilter（载入过滤器）	function（函数）	返回用以显示的已过滤数据，function有一个参数'data'表示		原始数据，你可以将原始数据改变为规范的数据格式，该函数必须返回包含 'total'和'rows'属性的标准数据对象。	
+	editors（编辑模式）	object（对象）	定义当编辑一行时的编辑模式。	predefined editors
+	view（视图）	object（对象）	定义数据表格的视图。	default view
+
+树形菜单[tree]
+属性
+	url		string		用以载入远程数据的超链接地址。		null
+	method		string		获取数据的HTTP方法。			post
+	animate		boolean		定义当节点打开或关闭时是否显示动画效果。false
+	checkbox	boolean		定义是否在每个节点之前显示复选框。	false
+	cascadeCheck	boolean		定义是否支持级联选择。			true
+	onlyLeafCheck	boolean		定义是否只在叶子节点之前显示复选框。	false
+	dnd		boolean		定义是否支持拖放。			false
+	data		array		将被载入的节点数据。			null
+事件	
+	onClick		node		当用户点击节点时触发，node参数包含如下属性：
+						id：节点id。
+						text：显示在节点上的文本。
+						checked：节点是否被选择。
+						attributes：节点的自定义属性。
+						target：被点击的目标DOM对象。
+	onDblClick	node		当用户双击节点时触发。
+	onBeforeLoad	node, param	在请求载入数据之前触发，返回false将取消载入。
+	onLoadSuccess	node, data	当数据载入成功时触发。
+	onLoadError	arguments	当数据载入失败时触发，arguments参数跟jQuery.ajax的'error'函数一样。
+	onBeforeExpand	node		在节点打开之前触发，返回false将取消打开。
+	onExpand	node		在节点被打开时触发。
+	onBeforeCollapse	node	在节点被关闭之前触发，返回false将取消关闭。
+	onCollapse	node		当节点被关闭时触发。
+	onCheck		node, checked	当用户点击复选框时触发。
+	onBeforeSelect	node		在节点被选择之前触发，返回false将取消选择。
+	onSelect	node		当节点被选择时触发。
+	onContextMenu	e, node		当节点被鼠标右键点击时触发。
+	onDrop		target, source, point		当节点位置被（拖动）更换时触发。
+							target：DOM对象，需要被拖动动的目标节点。
+							source：原始节点。
+							point：指明拖动方式，可选值：'append'，'top'或者'bottom'。
+	onBeforeEdit	node		在编辑节点之前触发。
+	onAfterEdit	node		在编辑节点之后触发。
+	onCancelEdit	node		当取消编辑时触发
+方法
+	options		none		返回树形菜单属性对象。
+	loadData	data		载入树形菜单数据。
+	getNode		target		获取特定的节点对象。
+	getData		target		获取特定的节点数据，包括它的子节点。
+	reload		target		重新载入树形菜单数据。
+	getRoot		none		获取根节点，返回节点对象。
+	getRoots	none		获取根节点，返回节点数组。
+	getParent	target		获取父节点，target是一个节点DOM对象。
+	getChildren	target		获取子节点，target参数是一个节点DOM对象。
+	getChecked	none		获取所有被选择的节点。
+	getSelected	none		获取被选择的节点并返回，如果没有节点被选择则返回null。
+	isLeaf		target		判断指定的节点是否是叶子节点，target参数是一个节点DOM对象。
+	find		id		查找指定的节点并返回节点对象。
+	select		target		选择一个节点，target参数是一个节点DOM对象。
+	check		target		设置指定的节点为已选择状态。
+	uncheck		target		设置指定的节点为未选择状态。<
+	collapse	target		关闭节点，target参数是一个节点DOM对象。
+	expand		target		打开节点，target参数是一个节点DOM对象。
+	collapseAll	target		关闭所有的节点。
+	expandAll	target		打开所有的节点。
+	expandTo	target		打开从根节点到指定节点之间的所有节点。
+	append		param		添加若干子节点到一个父节点，param参数有2个属性：
+					parent：DOM对象，将要被添加子节点的父节点，如果未指定，子节点将被添加至根节点。
+					data：数组，节点数据。
+	toggle		target		打开或关闭节点的触发器，target参数是一个节点DOM对象。
+	insert		param		在一个指定节点之前或之后插入节点，'param'参数包含如下属性：
+							before：DOM对象，在某个节点之前插入。
+							after: DOM对象，在某个节点之后插入。
+							data：对象，节点数据。
+	remove		target		移除一个节点和它的子节点，target参数是一个节点DOM对象。
+	pop		target		移除一个节点和它的子节点，返回被移除的节点数据。
+	update		param		更新指定的节点，param参数有如下属性：
+						target(DOM对象，将被更新的目标节点)，id，text，iconCls，checked等。
+	enableDnd	none		启用拖动特性。
+	disableDnd	none		禁用拖动特性。
+	beginEdit	nodeEl		开始编辑节点。
+	endEdit		nodeEl		结束编辑节点。
+	cancelEdit	nodeEl		取消编辑节点。
+节点属性：
+	id：	节点id，对载入远程数据很重要。
+	text：	显示在节点的文本。
+	state：	节点状态，'open' or 'closed'，默认为'open'。当设置为'closed'时，拥有子节点的节点将会从远程站点载入它们
+	checked：表明节点是否被选择。
+	attributes：可以为节点添加的自定义属性。
+	children：子节点，必须用数组定义
+
+窗口[window]
+$('#p').window({
+	title（标题）	string（字符串）	窗口的标题。	New Window
+	collapsible（可折叠）	boolean（布尔型）	定义是否显示折叠按钮。	true
+	minimizable（最小化）	boolean（布尔型）	定义是否显示最小化按钮。	true
+	maximizable（最大化）	boolean（布尔型）	定义是否显示最大化按钮。	true
+	closable（关闭）	boolean（布尔型）	定义是否显示关闭按钮。	true
+	closed（已关闭）	boolean（布尔型）	定义是否在初始化组件时关闭（隐藏）窗口	false
+	zIndex（堆叠顺序）	number（数字）		窗口的堆叠顺序，从第一个窗口的zIndex值开始递增。	9000
+	draggable（可拖放）	boolean（布尔型）	定义窗口是否可以被拖放。	true
+	resizable（可缩放）	boolean（布尔型）	定义窗口是否可以被缩放。	true
+	shadow（阴影）	boolean（布尔型）		如果设置为true，显示窗口的时候将显示阴影。	true
+	inline（行内显示）	boolean（布尔型）	定义如何布局窗口，如果设置为true，窗口将显示在它的父容器中，否则将显示在所有元素的上面。	false
+	modal（遮罩）	boolean（布尔型）		定义窗口是否带有遮罩效果。	true
+})	
+
+消息框[messager]
+
+
+combobox(obj)		//input下拉菜单
+
+draggable(obj)		//拖拽
+	proxy:'clone'	//创建一个克隆了原来元素的代理让其可以拖动
+	proxy:function(source){		//创建一个新代理让其拖动
+            var p = $('<div class="proxy">proxy</div>');
+            p.appendTo('body');
+            return p;
+        }
+
+按钮	iconCls表示图标
+<a href="#" class="easyui-linkbutton" iconCls="icon-cancel">Cancel</a>
+
+
+菜单按钮
+<div style="background:#fafafa;padding:5px;width:200px;border:1px solid #ccc">
+    <a href="#" class="easyui-menubutton" menu="#mm1" iconCls="icon-edit">Edit</a>
+    <a href="#" class="easyui-menubutton" menu="#mm2" iconCls="icon-help">Help</a>
+</div>
+<div id="mm1" style="width:150px;">
+    <div iconCls="icon-undo">Undo</div>
+    <div iconCls="icon-redo">Redo</div>
+    <div class="menu-sep"></div>
+    <div>Cut</div>
+    <div>Copy</div>
+    <div>Paste</div>
+    <div class="menu-sep"></div>
+    <div iconCls="icon-remove">Delete</div>
+    <div>Select All</div>
+</div>
+<div id="mm2" style="width:100px;">
+    <div>Help</div>
+    <div>Update</div>
+    <div>About</div>
+</div>
+
+分割按钮
+<div style="border:1px solid #ccc;background:#fafafa;padding:5px;width:120px;">
+		<a href="#" class="easyui-splitbutton" menu="#mm" iconCls="icon-edit">Edit</a>
+		<a href="#" class="easyui-linkbutton" plain="true" iconCls="icon-help"></a>
+	</div>
+	<div id="mm" style="width:150px;">
+		<div iconCls="icon-undo">Undo</div>
+		<div iconCls="icon-redo">Redo</div>
+		<div class="menu-sep"></div>
+		<div>Cut</div>
+		<div>Copy</div>
+		<div>Paste</div>
+		<div class="menu-sep"></div>
+		<div>
+			<span>Open</span>
+			<div style="width:150px;">
+				<div>Firefox</div>
+				<div>Internet Explorer</div>
+				<div class="menu-sep"></div>
+				<div>Select Program...</div>
+			</div>
+		</div>
+		<div iconCls="icon-remove">Delete</div>
+		<div>Select All</div>
+	</div>
+
+边框布局
+<div class="easyui-layout" style="width:400px;height:200px;">
+		<div region="west" split="true" title="Navigator" style="width:150px;">
+			<p style="padding:5px;margin:0;">Select language:</p>
+			<ul>
+				<li><a href="javascript:void(0)" onclick="showcontent('java')">Java</a></li>
+				<li><a href="javascript:void(0)" onclick="showcontent('cshape')">C#</a></li>
+				<li><a href="javascript:void(0)" onclick="showcontent('vb')">VB</a></li>
+				<li><a href="javascript:void(0)" onclick="showcontent('erlang')">Erlang</a></li>
+			</ul>
+		</div>
+		<div id="content" region="center" title="Language" style="padding:5px;">
+		</div>
+	</div>
+树形菜单	//如果对应span下面的ul存在并且有内容，则前标为文件夹，不然为文件
+<ul class="easyui-tree">
+    <li>
+        <span>Folder1</span>
+        <ul>
+            <li>
+                <span>Sub Folder 1</span>
+                <ul>
+                    <li><span>File 11</span></li>
+                    <li><span>File 12</span></li>
+                    <li><span>File 13</span></li>
+                </ul>
+            </li>
+            <li><span>File 2</span></li>
+            <li><span>File 3</span></li>
+        </ul>
+    </li>
+    <li><span>File2</span></li>
+</ul>
+折叠面板
+<div class="easyui-accordion" style="width:300px;height:200px;">
+	<div title="About Accordion" iconCls="icon-ok" style="overflow:auto;padding:10px;">
+		<h3 style="color:#0099FF;">Accordion for jQuery</h3>
+		<p>Accordion is a part of easyui framework for jQuery. It lets you define your accordion component on web page more easily.</p>
+	</div>
+	<div title="About easyui" iconCls="icon-reload" selected="true" style="padding:10px;">
+		easyui help you build your web page easily
+	</div>
+	<div title="Tree Menu">
+		<ul id="tt1" class="easyui-tree">
+			<li>
+				<span>Folder1</span>
+				<ul>
+					<li>
+						<span>Sub Folder 1</span>
+						<ul>
+							<li><span>File 11</span></li>
+							<li><span>File 12</span></li>
+							<li><span>File 13</span></li>
+						</ul>
+					</li>
+					<li><span>File 2</span></li>
+					<li><span>File 3</span></li>
+				</ul>
+			</li>
+			<li><span>File2</span></li>
+		</ul>
+	</div>
+</div>
+选项卡
+<div class="easyui-tabs" style="width:400px;height:100px;">
+    <div title="First Tab" style="padding:10px;">
+        First Tab
+    </div>
+    <div title="Second Tab" closable="true" style="padding:10px;">
+        Second Tab
+    </div>
+    <div title="Third Tab" iconCls="icon-reload" closable="true" style="padding:10px;">
+        Third Tab
+    </div>
+</div>
+
+动态添加选项卡
+<div style="margin-bottom:10px">
+    <a href="#" class="easyui-linkbutton" onclick="addTab('google','http://www.google.com')">google</a>
+    <a href="#" class="easyui-linkbutton" onclick="addTab('jquery','http://jquery.com/')">jquery</a>
+    <a href="#" class="easyui-linkbutton" onclick="addTab('easyui','http://jeasyui.com/')">easyui</a>
+</div>
+<div id="tt" class="easyui-tabs" style="width:400px;height:250px;">
+    <div title="Home">
+    </div>
+</div>
+function addTab(title, url){
+       if ($('#tt').tabs('exists', title)){
+           $('#tt').tabs('select', title);
+       } else {
+           var content = '<div>asd</div>';
+           $('#tt').tabs('add',{
+               title:title,
+               content:content,
+               closable:true
+           });
+       }
+   }
+
+轮播
+<div id="tt" class="easyui-tabs" style="width:330px;height:270px;">
+		<div title="Shirt1" style="padding:20px;">
+			<img src="images/shirt1.gif">
+		</div>
+		<div title="Shirt2" style="padding:20px;">
+			<img src="images/shirt2.gif">
+		</div>
+		<div title="Shirt3" style="padding:20px;">
+			<img src="images/shirt3.gif">
+		</div>
+		<div title="Shirt4" style="padding:20px;">
+			<img src="images/shirt4.gif">
+		</div>
+		<div title="Shirt5" style="padding:20px;">
+			<img src="images/shirt5.gif">
+		</div>
+	</div>
+
+var index = 0;
+	var t = $('#tt');
+	var tabs = t.tabs('tabs');
+	setInterval(function(){
+		t.tabs('select', tabs[index].panel('options').title);
+		index++;
+		if (index >= tabs.length){
+			index = 0;
+		}
+	}, 3000);
+
+表格
+<table id="tt" class="easyui-datagrid" style="width:400px;height:auto;">
+    <thead>
+    <tr>
+        <th field="name1" width="50" rowspan="2">Col 1</th>
+        <th field="name2" width="50" rowspan="2">Col 2</th>
+        <th field="name3" width="50" rowspan="2">Col 3</th>
+        <th colspan="3">Details</th>
+    </tr>
+    <tr>
+        <th field="name4" width="50">Col 4</th>
+        <th field="name5" width="50">Col 5</th>
+        <th field="name6" width="50">Col 6</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Data 1</td>
+        <td>Data 2</td>
+        <td>Data 3</td>
+        <td>Data 4</td>
+        <td>Data 5</td>
+        <td>Data 6</td>
+    </tr>
+    <tr>
+        <td>Data 1</td>
+        <td>Data 2</td>
+        <td>Data 3</td>
+        <td>Data 4</td>
+        <td>Data 5</td>
+        <td>Data 6</td>
+    </tr>
+    <tr>
+        <td>Data 1</td>
+        <td>Data 2</td>
+        <td>Data 3</td>
+        <td>Data 4</td>
+        <td>Data 5</td>
+        <td>Data 6</td>
+    </tr>
+    <tr>
+        <td>Data 1</td>
+        <td>Data 2</td>
+        <td>Data 3</td>
+        <td>Data 4</td>
+        <td>Data 5</td>
+        <td>Data 6</td>
+    </tr>
+    </tbody>
+</table>
+获得选中行的数据
+var row = $('#tt').datagrid('getSelected');
+	if (row){
+		alert('Item ID:'+row.itemid+"\nPrice:"+row.listprice);
+	}
+获得所有选中行的数据
+var ids = [];
+	var rows = $('#tt').datagrid('getSelections');
+	for(var i=0; i<rows.length; i++){
+		ids.push(rows[i].itemid);
+	}
+	alert(ids.join('\n'));
+
+自定义窗口工具栏
+<div id="win" class="easyui-window" title="My Window" style="padding:10px;width:200px;height:100px;">
+		window content
+	</div>
+$('#win').window({
+		collapsible:false,
+		minimizable:false,
+		maximizable:false,
+		tools:[{
+			iconCls:'icon-add',
+			handler:function(){
+				alert('add');
+			}
+		},{
+			iconCls:'icon-remove',
+			handler:function(){
+				alert('remove');
+			}
+		}]
+	});
+
+窗口与布局
+<div class="easyui-window" title="Layout Window" icon="icon-help" style="width:500px;height:250px;padding:5px;background: #fafafa;">
+		<div class="easyui-layout" fit="true">
+			<div region="west" split="true" style="width:120px;">
+				<ul class="easyui-tree">
+					<li>
+						<span>Library</span>
+						<ul>
+							<li><span>easyui</span></li>
+							<li><span>Music</span></li>
+							<li><span>Picture</span></li>
+							<li><span>Database</span></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<div region="center" border="false" border="false">
+				<div class="easyui-tabs" fit="true">
+					<div title="Home" style="padding:10px;">
+						jQuery easyui framework help you build your web page easily.
+					</div>
+					<div title="Contacts">
+						No contact data.
+					</div>
+				</div>
+			</div>
+			<div region="south" border="false" style="text-align:right;height:30px;line-height:30px;">
+				<a class="easyui-linkbutton" icon="icon-ok" href="javascript:void(0)">Ok</a>
+				<a class="easyui-linkbutton" icon="icon-cancel" href="javascript:void(0)">Cancel</a>
+			</div>
+		</div>
+	</div>
+
+对话栏
+<div id="dd" class="easyui-dialog" style="padding:5px;width:400px;height:200px;"
+     title="My Dialog" iconCls="icon-ok"
+     toolbar="#dlg-toolbar" buttons="#dlg-buttons">
+    Dialog Content.
+</div>
+<div id="dlg-toolbar">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:alert('Add')">Add</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:alert('Save')">Save</a>
+</div>
+<div id="dlg-buttons">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="javascript:alert('Ok')">Ok</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dd').dialog('close')">Cancel</a>
+</div>
+
+获取服务器数据创建树形菜单
+<ul id="tree" class="easyui-tree" url="a.json">
+</ul>
+
+树形菜单添加节点
+var node = $('#tree').tree('getSelected');
+getSelected 方法的返回结果是一个 javascript 对象，它有一个 id、text、target 属性。target 属性是一个 DOM 对象
+
+带复选框的树形菜单
+<ul id="tt" class="easyui-tree" url="data/tree_data.json" checkbox="true">
+
+</ul>
+
+加载树形菜单
+<ul id="tree" class="easyui-tree">
+</ul>
+$('#tree').tree({
+                url: 'a.json',
+                loadFilter: function(rows){
+                    return convert(rows);
+                }
+            })
+            function convert(rows){
+                function exists(rows, parentId){
+                    for(var i=0; i<rows.length; i++){
+                        if (rows[i].id == parentId) return true;
+                    }
+                    return false;
+                }
+
+                var nodes = [];
+                // get the top level nodes
+                for(var i=0; i<rows.length; i++){
+                    var row = rows[i];
+                    if (!exists(rows, row.parentId)){
+                        nodes.push({
+                            id:row.id,
+                            text:row.name
+                        });
+                    }
+                }
+
+                var toDo = [];
+                for(var i=0; i<nodes.length; i++){
+                    toDo.push(nodes[i]);
+                }
+                while(toDo.length){
+                    var node = toDo.shift();	// the parent node
+                    // get the children nodes
+                    for(var i=0; i<rows.length; i++){
+                        var row = rows[i];
+                        if (row.parentId == node.id){
+                            var child = {id:row.id,text:row.name};
+                            if (node.children){
+                                node.children.push(child);
+                            } else {
+                                node.children = [child];
+                            }
+                            toDo.push(child);
+                        }
+                    }
+                }
+
+                return nodes;
+            }
+ajax表单
+<form id="ff" action="a.json" method="post"></form>
+$('#ff').form({
+                success:function(data){
+                    alert('Info'+ data+ 'info');
+                }
+            });
+
+表单验证
+<form id="ff" method="post">
+    <div>
+        <label for="name">Name:</label>
+        <input class="easyui-validatebox" type="text" name="name" id="name" required="true">
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input class="easyui-validatebox" type="text" name="email" id="email" required="true" validType="email">
+    </div>
+    <div>
+        <label for="subject">Subject:</label>
+        <input class="easyui-validatebox" type="text" id="subject" name="subject" required="true">
+    </div>
+    <div>
+        <label for="message">Message:</label>
+        <textarea name="message" id="message" style="height:60px;"></textarea>
+    </div>
+    <div>
+        <input type="submit" value="Submit">
+    </div>
+</form>
+$('#ff').form({
+                url:'a.json',
+                onSubmit:function(){
+                    return $(this).form('validate');
+                },
+                success:function(data){
+                    $.messager.alert('Info', data, 'info');
+                }
+            });
+
+下拉框
+<input id="cc" style="width:100px" url="a.json" valueField="id" textField="text">
+$('#cc').combobox({
+                formatter:function(row){
+                    return '<span class="item-text">'+row.text+'</span>';
+                }
+            });		//对传入的数据每一项都执行一次

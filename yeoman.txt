@@ -1,0 +1,24 @@
+命令符操作:
+
+yo angular //创建一个angular项目
+
+yo angular:route myroute
+//创建一个myroute.html和myroute.js,并且在app.js上配置一个myroute路由
+
+yo angular:route myroute --uri=my/route
+//跟上面不同的是在app.js上配置的路由路径是my/route
+
+yo angular:controller user
+//创建一个user.js，里面有一个名字叫'UserCtrl'的控制器
+
+yo angular:directive myD
+//在新建directives文件夹里创建一个myd.js,里面创建了一个叫'myD'的指令
+
+yo angular:filter myF
+//在新建filters文件夹里创建一个myF.js,里面创建了一个叫'myF'的过滤器
+
+yo angular:view user
+//在views文件夹里创建一个user.html
+
+yo angular:service myS
+//在新建services文件夹里创建一个myS.js,里面创建了一个叫'myS'的服务

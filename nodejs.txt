@@ -1,0 +1,281 @@
+﻿var http = require("http");	//创建请求对象
+function sa(request, response) {
+    response.writeHead(200, {"Content-Type": "text/plain"});
+    response.write("Hello World");
+    response.end();
+}
+http.createServer(sa).listen(8888); //8888表示端口号
+
+当回调启动,我们的 sa() 函数被触发的时候,有两个参数被传入:request 和 response.
+它们是对象，你可以使用它们的方法来处理HTTP请求的细节，并且响应请求（比如向发出请求的浏览器发回一些东西）。
+
+所以我们的代码就是：
+
+当收到请求时，使用 response.writeHead() 函数发送一个HTTP状态200和HTTP头的内容类型（content-type）
+
+使用 response.write() 函数在HTTP相应主体中发送文本“Hello World"。  
+
+最后，我们调用 response.end() 完成响应
+
+
+
+全局变量
+
+__filename  	//表示当前执行脚本的路径名
+__dirname	//表示当前执行脚本所在的目录
+
+
+
+文件系统（fs）*/
+
+fs.rename(path1,path2,[callback])	//重命名某个文件，可以改变文件位置，回调参数err
+fs.chmod(path,mode,[callback])		//修改文件权限,回调参数err
+fs.stat(path,[callback])		//读取文件元信息，回调参数err，stats
+fs.exists(path,[callback])		//判断文件是否存在，回调参数isExists
+fs.unlink(path,[callback])		//删除文件，回调参数err
+fs.readFile(path,[callback])		//读取文件数据，回调参数err，file
+
+fs.write(fd,buffer,offset,length,position,[callback])
+	//将buffer缓冲器内容写入fd文件
+	//如果position为null，数据将从当前位置开始写入
+	//回调参数err，written。written表示有多少字节的数据已经写入
+
+fs.read(fd,buffer,offset,length,position,[callback])
+
+换行符为\r\n
+例如
+fs.writeFile(url,'我多萨达\r\n换行大撒',func);
+
+
+读写流文件
+
+可读流
+
+var read=fs.ReadStream(url  [, options])		//创建可读流对象
+	//options： 数据类型为对象，可选，其属性值有：
+	flags: 用于指定对该文件采取什么操作，默认值为”r”；
+	encoding：”utf8″、”ascii”、”base64″。默认值为null；
+	autoClose：用于指定是否关闭在读取文件时操作系统内部使用的文件描述符。如果属性值设置为false，则文件不会自动关闭，即使在读取文件过程中产生了错误，开发者也必须通过使用close方法或closeSync方法来手动关闭文件。如果属性值设定为true，则文件读取完毕或读取文件过程中产生错误时，文件将自动关闭。默认值为true；
+	start： 指定文件开始读取位置（单位为字节数）；
+	end： 指定文件结束读取位置（单位为字节数）
+
+事件：
+readable	//可以读取数据时触发
+data		//读取到数据时触发
+end		//读取完所有数据时触发
+error		//读取数据错误时触发
+close		//当可读流对象被关闭时触发
+
+方法
+read		//读取数据
+setEncoding	//指定编码读取数据
+pause		//用于通知对象停止触发data事件
+resume		//用于通知对象触发data事件
+pipe		//设置一个通道，取出数据到指定的目标对象
+unpipe		//取消pipe设置的通道
+unshift		//取消解析器的绑定
+
+可写流
+
+var write=fs.WriteStream(url)		//创建可写流对象
+
+事件：
+drain		//当缓冲区数据已经全部写入文件时触发
+finish		//当end方法被调用且数据被全部写入操作系统缓存区时触发
+pipe		//当用于读取数据的对象的pipe方法被调用时触发
+unpipe		//当用于读取数据的对象的unpipe方法被调用时触发
+error		//当写入数据的过程中产生错误时触发
+
+方法：
+write		//用于写入数据
+end		//当没有数据再被写入流中时调用该方法。这将迫使操作系统缓存区中的剩余数据被立即写入目标对象中。当该方法被调用后，将不能继续在目标对象中写入数据
+
+属性：
+bytesWritten	//当前已在文件中写入数据的字节数
+
+
+fs.createReadStream( src ).pipe( fs.createWriteStream( dest ) );
+
+
+
+
+
+
+
+
+
+
+
+后台接收base64数据时，会将+变成空格
+
+
+
+
+
+
+
+
+
+
+长连接（socket.io）*/
+ 标签状态偶尔异常，${VALUE}$分钟内又有标签状态正常数据
+服务器端
+var io=require('socket.io').listen(800);//创建端口号800的服务器
+
+io.on('connection',function(socket){	//当服务器连接时调用回调，参数socket为对应的客户端
+	socket.emit('user',data)	//向当前客户端发送user事件，并带参数data
+	io.sockets.emit('user',data)	//向所有客户端发送user事件，并带参数data
+	socket.on('disconnect',function(info){})	//当客户端断开连接是触发回调
+});
+
+客户端（需导入socket.io.js文件）	
+var socket=io.connect('http://localhost:800');	//连接服务器对应的端口
+
+socket.on('user',function(da){})	//接收服务器发来的user事件，参数为传来的参数
+socket.emit('event',da)			//同服务器端
+
+
+创建服务器（http）*/
+
+http.createServer(callback).listen(8888)//创建一个端口号8888的服务器
+					//接收请求是触发回调函数，参数为request,respone
+		
+路径管理（path）
+path.normalize(p)
+规范化路径，注意'..' 和 '.'
+
+
+path.join([path1][, path2][, ...])	//用于连接路径
+
+path.resolve([from ...], to)		//将 to 参数解析为绝对路径
+
+path.isAbsolute(path)			//判断参数 path 是否是绝对路径。
+
+path.relative(from, to)			//用于将相对路径转为绝对路径。
+
+path.dirname(p)			//返回路径中代表文件夹的部分，同 Unix 的dirname 命令类似。
+
+path.basename(p[, ext])		//返回路径中的最后一部分。同 Unix 命令 bashname 类似。
+
+path.extname(p)	//返回路径中文件的后缀名，即路径中最后一个'.'之后的部分。如果一个路径中并不包含'.'或该路径只包含一个'.' 且这个'.'为路径的第一个字符，则此命令返回空字符串。
+
+path.parse(pathString)	//返回路径字符串的对象。
+
+path.format(pathObject)	//从对象中返回路径字符串，和 path.parse 相反
+			
+
+参数转化（querystring）*/
+
+querystring.stringify(obj,[sep],[eq])	//将对象转化为字符串
+					//obj为必选参数
+					//sep为逗号转化符,默认为&	
+					//eq为冒号转化符，默认为=
+querystring.parse(str,[sep],[eq],[options])	//将字符串转化为对象
+						//str为必选参数
+						//根据sep符号转化为逗号，默认为&
+						//根据eq符号转化为冒号,默认为=
+
+querystring.escape(str)		//编码
+querystring.unescape(str)	//解码
+
+地址转化（url）*/
+
+url.parse(str)			//转化为url对象
+url.parse('http://172.16.65.37:8080/p/a/t/h?query=string#hash');
+
+输出
+{
+  protocol: 'http:',
+  slashes: true,
+  auth: null,
+  host: '172.16.65.37:8080',
+  port: '8080',
+  hostname: '172.16.65.37',
+  hash: '#hash',
+  search: '?query=string',
+  query: 'query=string',
+  pathname: '/p/a/t/h',
+  path: '/p/a/t/h?query=string',
+  href: 'http://172.16.65.37:8080/p/a/t/h?query=string#hash' 
+}
+
+url.format(obj)	//将一个对象转化为url字符串
+
+url.format({
+     protocol: 'http:',
+     host: 'www.example.com',
+     pathname: '/p/a/t/h',
+     search: 'query=string'
+ });
+ /* =>	'http://www.example.com/p/a/t/h?query=string'
+
+工具模块（util）
+util.isArray(obj) 	//判断是否为数组
+util.isDate(obj) 	//判断是否为时间对象
+util.isRegExp(obj) 	//判断是否为正则对象
+
+
+
+
+文件对应类型			
+
+文件			content-type
+json			application/json
+xml			application/xml
+pdf			application/pdf
+
+"css": "text/css",
+
+  "gif": "image/gif",
+
+  "html": "text/html",
+
+  "ico": "image/x-icon",
+
+  "jpeg": "image/jpeg",
+
+  "jpg": "image/jpeg",
+
+  "js": "text/javascript",
+
+  "json": "application/json",
+
+  "pdf": "application/pdf",
+
+  "png": "image/png",
+
+  "svg": "image/svg+xml",
+
+  "swf": "application/x-shockwave-flash",
+
+  "tiff": "image/tiff",
+
+  "txt": "text/plain",
+
+  "wav": "audio/x-wav",
+
+  "wma": "audio/x-ms-wma",
+
+  "wmv": "video/x-ms-wmv",
+
+  "xml": "text/xml"
+
+
+
+
+
+浏览器是否打开文件还是下载
+content-disposition
+值：inline	//打开文件直接查看
+值：attachment;filename="filename.txt"	//表示可下载的附件，并指定默认文件名
+
+
+//设置跨域请求的地址
+res.writeHead(200,{
+            'Access-Control-Allow-Origin':'http://localhost:63342'
+        });
+
+
+
+
+

@@ -1,0 +1,21 @@
+查看已安装的版本：
+
+$ nvm ls
+
+查看可以安装的版本：
+
+$ nvm ls-remote
+
+安装指定的版本：
+
+$ nvm install <version>
+
+指定的版本将会直接安装在 nvm 程序所在的目录下。
+
+删除指定的版本：
+
+$ nvm uninstall <version>
+
+使用选定的版本：
+
+$ nvm use <version>

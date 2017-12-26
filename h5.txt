@@ -1,0 +1,165 @@
+元素属性
+contenteditable		//可编辑
+
+hidden			//如果这个属性存在则隐藏元素
+
+window.addEventListener('storage',function(e){		//监听localStorage事件，发生改变触发
+	console.log(e);
+},true)
+
+audio video	//视频播放
+
+支持格式：。。。
+
+属性
+
+src			//指定传入数据的地址
+
+autoplay		//指定是否自动播放
+
+preload			//是否预加载。值有：none，metadata、auto，默认为auto（加载）
+			//metadata表示只加载元数据（媒体字段数，第一帧，播放列表，播放时间等）
+
+poster(vedio独有属性)	//当视频不可用时展示替代的图片，值为图片地址
+
+loop			//指定是否循环播放
+
+controls		//指定是否显示控制条，控制台有播放、暂停等按钮
+
+width/height(vedio独有属性)	//指定视频宽高
+
+error		//表示发生错误时，该属性为赋予状态值，可能值有：
+		//1：用户操作中止
+		//2：资源可用，下载时网络错误
+		//3：资源可以，解码时发生错误
+		//4：媒体格式不被支持
+
+networkState	//当前网络状态，可能值有：
+		//0：初始状态	
+		//1：选择好用什么编码播放，但尚未建立网络连接
+		//2：媒体数据加载中
+		//3：没有支持的编码格式
+
+currentSrc	//读取元素的媒体数据url
+
+方法
+
+play		//播放媒体，将元素的paused属性变为false
+
+pause		//暂停媒体，将元素的paused属性变为true
+
+load		//重新载入媒体，将error属性变为null
+
+事件	
+
+loadstart	//开始在网上寻找媒体数据
+
+progress	//正在获取媒体数据
+
+suspend		//暂停获取数据，但是下载过程并未正常结束
+
+abort		//中止获取数据，但不是错误引起的
+
+error		//报错
+
+emptied		//网络状态突然变为未初始化状态
+
+stalled		//获取数据失败
+
+play		//开始播放时
+
+pause		//播放暂停时
+
+loadedmetadata	//获取媒体数据时间长和字节数
+
+loadeddata	//加载当前播放位置的媒体数据
+
+waiting		//得不到下一帧数据
+
+playing		//正在播放
+
+canplay		//缓存的时候
+
+timeupdate	//时间发生改变
+
+本地数据库
+
+var db=openDatabase('dbName','1.0','text db',2*1024*1024)	//创建一个本地数据库
+
+openDatabase	//创建数据库对象并返回
+		//第一个参数是数据库名，第二个参数为版本号，第三个参数为数据库的描述，第四个参数为数据库大小
+
+transaction	//防止在访问数据库中受到打扰
+
+db.transaction(function(tx){
+	//执行sql语句
+	tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique,log)');
+})
+
+tx.executeSql('INSERT INTO MsgData VALUES(?,?,?)',['2','WA','ss'],sucFn,errFn)
+	//tx为transaction对象
+	//第一个参数为SQL语句，将需要用到的参数用？代替
+	//第二个参数为SQL语句需要用到的参数组成的数组
+	//第三个参数为执行成功调用的回调函数，参数有：tx和查询返回的数据对象
+	//第四个参数为出错调用的函数，参数有：tx和错误文字信息
+
+
+离线应用程序
+
+
+
+新的API
+
+FileReader是一个构造函数
+
+FileReader的实例方法
+
+abort			none			中断读取
+
+readAsBinaryString	file			将文件读取为二进制码
+
+readAsDataURL		file			将文件读取为 DataURL
+
+readAsText		file, [encoding]	将文件读取为文本
+
+FileReader的实例事件
+
+onabort 			中断时触发
+
+onerror 			出错时触发
+
+onload 				文件读取成功完成时触发
+
+onloadend 			读取完成触发，无论成功或失败
+
+onloadstart 			读取开始时触发
+
+onprogress 			读取中
+
+实例：	var file=this.files[0];
+		var reader=new FileReader();
+		var url=reader.readAsDataURL(file);
+		
+		reader.onload=function(e){
+			console.log(e);
+			img.attr('src',e.srcElement.result);
+		}
+
+
+
+本地存储
+window.localStorage		//获取本地存储数据
+window.localStorage.setItem(name,value)	//存储数据
+window.localStorage.getItem(name)	//获取指定属性的值
+window.localStorage.removeItem(name)	//删除指定属性的值
+window.localStorage.clear()		//清空本地存储
+
+
+window.sessionStorage		//获取本地存储数据
+window.sessionStorage.setItem(name,value)	//存储数据
+window.sessionStorage.getItem(name)	//获取指定属性的值
+window.sessionStorage.removeItem(name)	//删除指定属性的值
+window.sessionStorage.clear()		//清空本地存储
+			
+
+
